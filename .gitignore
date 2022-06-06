@@ -1,0 +1,3 @@
+
+# ignore some terraform files
+*.terraform*
