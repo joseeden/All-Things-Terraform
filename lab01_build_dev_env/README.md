@@ -26,7 +26,7 @@ Below is the environment I am using for this lab.
 
 Before we start with building the code, we have to ensure that we'll be able to authenticate using API keys. 
 
-Follow these steps to [create the API keys and the credentials file locally.](../README.md)                         
+Follow these steps to [create the API keys and the credentials file locally.](../README.md#pre-requisites)                         
 
 ----------------------------------------------
 
@@ -37,7 +37,7 @@ For this one, I'm using VS Code. We'll set it up with the following extensions:
 - AWS Toolkit Extension
 - Terraform Extension
 
-Follow these steps to [setup your Visual Studio Code.](../README.md)  
+Follow these steps to [setup your Visual Studio Code.](../README.md#pre-requisites)  
  
 ----------------------------------------------
 
@@ -45,7 +45,7 @@ Follow these steps to [setup your Visual Studio Code.](../README.md)
 
 To use Terraform, it needs to be installed on our local machine.
 
-Follow these steps to [install Terraform.](../README.md)
+Follow these steps to [install Terraform.](../README.md#pre-requisites)
 
 ----------------------------------------------
 
