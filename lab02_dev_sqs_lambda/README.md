@@ -917,6 +917,15 @@ If you see the messages you send to the SQS main queue, CONGRATS! 😀
 
 ----------------------------------------------
 
+### Cleanup
+
+To delete all the resources, just run the **destroy** command.
+
+```bash
+$ terraform destroy -auto-approve 
+```
+----------------------------------------------
+
 ### References:
 
 - [Write AWS Lambda Logs to CloudWatch Log Group with Terraform](https://stackoverflow.com/questions/59949808/write-aws-lambda-logs-to-cloudwatch-log-group-with-terraform)
