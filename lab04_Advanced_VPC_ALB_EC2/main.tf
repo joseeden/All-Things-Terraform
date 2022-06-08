@@ -305,13 +305,13 @@ resource "aws_autoscaling_group" "lab04-asg" {
 
   target_group_arns = [
     aws_lb_target_group.lab04-alb-target-group.arn
-    ]
-    
+  ]
+
   vpc_zone_identifier = [
     aws_subnet.lab04-private-subnet-1.id,
     aws_subnet.lab04-private-subnet-2.id
   ]
-  
+
 
   launch_template {
     id      = aws_launch_template.lab04-launchtemplate-webserver.id
