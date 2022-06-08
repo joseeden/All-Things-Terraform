@@ -21,13 +21,13 @@ resource "aws_vpc" "lab04-vpc" {
 # Creates the public subnet 1 and 2
 resource "aws_subnet" "lab04-public-subnet" {
   map_public_ip_on_launch = true
-  vpc_id     = aws_vpc.lab04-vpc.id
-  count = length(var.avail_zones)
-  cidr_block = cidrsubnet(var.cidr_block, 8, count.index)
-  availability_zone = element(var.avail_zones, count.index)
+  vpc_id                  = aws_vpc.lab04-vpc.id
+  count                   = length(var.avail_zones)
+  cidr_block              = cidrsubnet(var.cidr_block, 8, count.index)
+  availability_zone       = element(var.avail_zones, count.index)
 
   tags = {
-    Name = "lab04-public-subnet-${length(var.avail_zones)[count.index]}"
+    Name = "lab04-public-subnet-${element(var.avail_zones, count.index)}"
     Type = "Public"
   }
 }
@@ -35,13 +35,13 @@ resource "aws_subnet" "lab04-public-subnet" {
 # Creates the private subnet 1 and 2
 resource "aws_subnet" "lab04-private-subnet" {
   map_public_ip_on_launch = true
-  vpc_id     = aws_vpc.lab04-vpc.id
-  count = length(var.avail_zones)
-  cidr_block = cidrsubnet(var.cidr_block, 8, count.index + length(var.avail_zones))
-  availability_zone = element(var.avail_zones, count.index)
+  vpc_id                  = aws_vpc.lab04-vpc.id
+  count                   = length(var.avail_zones)
+  cidr_block              = cidrsubnet(var.cidr_block, 8, count.index + length(var.avail_zones))
+  availability_zone       = element(var.avail_zones, count.index)
 
   tags = {
-    Name = "lab04-private-subnet-${length(var.avail_zones)[count.index]}"
+    Name = "lab04-private-subnet-${element(var.avail_zones, count.index)}"
     Type = "Public"
   }
 }
@@ -54,20 +54,21 @@ resource "aws_internet_gateway" "lab04-igw" {
   }
 }
 
-# Create the Elastic IP to be used by the NAT gateway.
+# Create the Elastic IPs per availability zone
 resource "aws_eip" "lab04-eip-nat" {
   count = length(var.avail_zones)
-  vpc = true
+  vpc   = true
 }
 
 # Creates the NAT gateway - Public NAT.
-# The NAT gateway is provisioned in the first public subnet
+# This creates a NAT gateway in each availability zone.
 resource "aws_nat_gateway" "lab04-natgw" {
-  allocation_id = aws_eip.lab04-eip-nat.id
-  subnet_id     = aws_subnet.lab04-public-subnet-1.id
+  count         = length(var.avail_zones)
+  allocation_id = element(aws_eip.lab04-eip-nat.*.id, count.index)
+  subnet_id     = element(aws_subnet.lab04-public-subnet.*.id, count.index)
 
   tags = {
-    Name = "lab04-natgw"
+    Name = "lab04-natgw-${element(var.avail_zones, count.index)}"
   }
 
   # To ensure proper ordering, it is recommended to add an 
@@ -75,9 +76,10 @@ resource "aws_nat_gateway" "lab04-natgw" {
   depends_on = [aws_internet_gateway.lab04-igw]
 }
 
+#========================================================================
 # Creates the route table. One route table per AZ
 # This is a public route table that routes to the IGW.
-resource "aws_route_table" "lab04-rt-public-1" {
+resource "aws_route_table" "lab04-rt-public" {
   vpc_id = aws_vpc.lab04-vpc.id
 
   route {
@@ -86,47 +88,40 @@ resource "aws_route_table" "lab04-rt-public-1" {
   }
 
   tags = {
-    Name = "lab04-rt-public-1"
+    Name = "lab04-rt-public"
   }
 }
 
+# Associates the route table to the public subnet
+resource "aws_route_table_association" "lab04-route-assoc-public" {
+  count          = length(var.avail_zones)
+  subnet_id      = element(aws_subnet.lab04-public-subnet.*.id, count.index)
+  route_table_id = aws_route_table.lab04-rt-public.id
+}
+
+#========================================================================
 # This is a private route table that routes to the NAT-GW.
-resource "aws_route_table" "lab04-rt-private-2" {
+resource "aws_route_table" "lab04-rt-private" {
   vpc_id = aws_vpc.lab04-vpc.id
+  count  = length(var.avail_zones)
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.lab04-natgw.id
+    gateway_id = element(aws_nat_gateway.lab04-natgw.*.id, count.index)
   }
 
   tags = {
-    Name = "lab04-rt-private-2"
+    Name = "lab04-rt-private-${element(var.avail_zones, count.index)}"
   }
 }
 
-# Associates the route table to the first public subnet
-resource "aws_route_table_association" "lab04-route-assoc-1" {
-  subnet_id      = aws_subnet.lab04-public-subnet-1.id
-  route_table_id = aws_route_table.lab04-rt-public-1.id
+# Associates the route table to the subnets
+resource "aws_route_table_association" "lab04-route-assoc-private" {
+  count          = length(var.avail_zones)
+  subnet_id      = element(aws_subnet.lab04-private-subnet.*.id, count.index)
+  route_table_id = element(aws_route_table.lab04-rt-private.*.id, count.index)
 }
-
-# Associates the route table to the second public subnet
-resource "aws_route_table_association" "lab04-route-assoc-2" {
-  subnet_id      = aws_subnet.lab04-public-subnet-2.id
-  route_table_id = aws_route_table.lab04-rt-public-1.id
-}
-
-# Associates the route table to the first private subnet
-resource "aws_route_table_association" "lab04-route-assoc-3" {
-  subnet_id      = aws_subnet.lab04-private-subnet-1.id
-  route_table_id = aws_route_table.lab04-rt-private-2.id
-}
-
-# Associates the route table to the second private subnet
-resource "aws_route_table_association" "lab04-route-assoc-4" {
-  subnet_id      = aws_subnet.lab04-private-subnet-2.id
-  route_table_id = aws_route_table.lab04-rt-private-2.id
-}
+#========================================================================
 
 # Creates the security group for the autoscaling group of wenservers
 # Note that the egress traffic is routed to the ALB.
@@ -223,17 +218,7 @@ resource "aws_lb" "lab04-alb" {
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.lab04-secgroup-2.id]
   enable_deletion_protection = false
-
-  subnets = [
-    aws_subnet.lab04-public-subnet-1.id,
-    aws_subnet.lab04-public-subnet-2.id
-  ]
-
-  # access_logs {
-  #   bucket  = aws_s3_bucket.lb_logs.bucket
-  #   prefix  = "test-lb"
-  #   enabled = true
-  # }
+  subnets                    = aws_subnet.lab04-public-subnet.*.id
 
   tags = {
     Environment = "PRD"
@@ -277,20 +262,15 @@ resource "aws_lb_listener_rule" "lab04-alb-listener-rule-1" {
 
 # Creates the ASG of webserver instances.
 resource "aws_autoscaling_group" "lab04-asg" {
-  name             = "lab04-asg"
-  desired_capacity = 2
-  max_size         = 5
-  min_size         = 2
+  name                = "lab04-asg"
+  desired_capacity    = 2
+  max_size            = 5
+  min_size            = 2
+  vpc_zone_identifier = aws_subnet.lab04-private-subnet.*.id
 
   target_group_arns = [
     aws_lb_target_group.lab04-alb-target-group.arn
-    ]
-    
-  vpc_zone_identifier = [
-    aws_subnet.lab04-private-subnet-1.id,
-    aws_subnet.lab04-private-subnet-2.id
   ]
-  
 
   launch_template {
     id      = aws_launch_template.lab04-launchtemplate-webserver.id

@@ -2,20 +2,20 @@ output "vpc_id" {
   value = aws_vpc.lab04-vpc.id
 }
 
-output "public_subnet1_id" {
-  value = aws_subnet.lab04-public-subnet-1.id
+output "public_subnet_id" {
+  value = aws_subnet.lab04-public-subnet.*.id
 }
 
-output "public_subnet2_id" {
-  value = aws_subnet.lab04-public-subnet-2.id
+output "private_subnet_id" {
+  value = aws_subnet.lab04-private-subnet.*.id
 }
 
-output "private_subnet1_id" {
-  value = aws_subnet.lab04-private-subnet-1.id
+output "public_cidr_blocks" {
+  value = aws_subnet.lab04-public-subnet.*.cidr_block
 }
 
-output "private_subnet2_id" {
-  value = aws_subnet.lab04-private-subnet-2.id
+output "private_cidr_blocks" {
+  value = aws_subnet.lab04-private-subnet.*.cidr_block
 }
 
 output "alb_dns_name" {
