@@ -1,4 +1,4 @@
 
 # ignore some terraform files
 *.terraform*
-*.tfstate*
+*.tfstate.*
