@@ -6,9 +6,7 @@
 In this lab, our setup would look like this:
 
 1. We have an SQS main queue that will feed messages to a Lambda function that's written in Python.
-
 2. The Lambda function will have 2 attemts to process the messages.
-
 3. After two failed attempts, the function will send the message to a secondary queue, which is called a **Dead Letter Queue**.
 
 ----------------------------------------------
@@ -472,9 +470,7 @@ As such, we need to do the following steps:
 You may read more about the policy and policy attachments in the link below:
 
 - [Data Source: aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document)
-
 - [Resource: aws_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment)
-
 - [Lambda service throws error execution role does not have permissions to call receiveMessage on SQS](https://stackoverflow.com/questions/55472987/lambda-service-throws-error-execution-role-does-not-have-permissions-to-call-rec)
 
 Modify the main.tf file.
