@@ -1,6 +1,8 @@
 
 ## Lab 01: Build a Dev Environment with Terraform and AWS
 
+### Introduction
+
 > *This lab is based on Derek Morgan's course, ["Build a Dev Environment with Terraform and AWS"](https://github.com/morethancertified/rfp-terraform)*
 
 In this lab, we'll build the following resources in AWS
