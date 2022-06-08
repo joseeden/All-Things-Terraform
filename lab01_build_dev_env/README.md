@@ -691,7 +691,7 @@ resource "aws_security_group" "tf-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["180.190.52.180/32"]
+    cidr_blocks = ["1.2.3.4/32"]
   }
 
   egress {
@@ -877,7 +877,7 @@ resource "aws_security_group" "tf-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["180.190.52.180/32"]
+    cidr_blocks = ["1.2.3.4/32"]
   }
 
   egress {
@@ -1004,7 +1004,7 @@ resource "aws_security_group" "tf-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["180.190.52.180/32"]
+    cidr_blocks = ["1.2.3.4/32"]
   }
 
   egress {
@@ -1139,7 +1139,7 @@ resource "aws_security_group" "tf-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["180.190.52.180/32"]
+    cidr_blocks = ["1.2.3.4/32"]
   }
 
   egress {
@@ -1359,7 +1359,7 @@ resource "aws_security_group" "tf-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["180.190.52.180/32"]
+    cidr_blocks = ["1.2.3.4/32"]
   }
 
   egress {
@@ -1617,7 +1617,15 @@ $ terraform output
 
 tf-node-1-ip = "13.229.78.225"
 ```
+----------------------------------------------
 
+### Cleanup
+
+To delete all the resources, just run the **destroy** command.
+
+```bash
+$ terraform destroy -auto-approve 
+```
 ----------------------------------------------
 
 ### References:
