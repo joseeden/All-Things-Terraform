@@ -18,53 +18,31 @@ resource "aws_vpc" "lab04-vpc" {
   }
 }
 
-# Creates the first public subnet.
-resource "aws_subnet" "lab04-public-subnet-1" {
+# Creates the public subnet 1 and 2
+resource "aws_subnet" "lab04-public-subnet" {
+  map_public_ip_on_launch = true
   vpc_id     = aws_vpc.lab04-vpc.id
-  cidr_block = cidrsubnet(var.cidr_block, 8, 1)
-  # map_public_ip_on_launch = true
-  availability_zone = var.avail_zones[0]
+  count = length(var.avail_zones)
+  cidr_block = cidrsubnet(var.cidr_block, 8, count.index)
+  availability_zone = element(var.avail_zones, count.index)
 
   tags = {
-    Name = "lab04-public-subnet-1"
+    Name = "lab04-public-subnet-${length(var.avail_zones)[count.index]}"
     Type = "Public"
   }
 }
 
-# Creates the second public subnet.
-resource "aws_subnet" "lab04-public-subnet-2" {
+# Creates the private subnet 1 and 2
+resource "aws_subnet" "lab04-private-subnet" {
+  map_public_ip_on_launch = true
   vpc_id     = aws_vpc.lab04-vpc.id
-  cidr_block = cidrsubnet(var.cidr_block, 8, 2)
-  # map_public_ip_on_launch = true
-  availability_zone = var.avail_zones[1]
+  count = length(var.avail_zones)
+  cidr_block = cidrsubnet(var.cidr_block, 8, count.index + length(var.avail_zones))
+  availability_zone = element(var.avail_zones, count.index)
 
   tags = {
-    Name = "lab04-public-subnet-2"
+    Name = "lab04-private-subnet-${length(var.avail_zones)[count.index]}"
     Type = "Public"
-  }
-}
-
-# Creates the first private subnet.
-resource "aws_subnet" "lab04-private-subnet-1" {
-  vpc_id            = aws_vpc.lab04-vpc.id
-  cidr_block        = cidrsubnet(var.cidr_block, 8, 3)
-  availability_zone = var.avail_zones[0]
-
-  tags = {
-    Name = "lab04-private-subnet-1"
-    Type = "Private"
-  }
-}
-
-# Creates the second private subnet.
-resource "aws_subnet" "lab04-private-subnet-2" {
-  vpc_id            = aws_vpc.lab04-vpc.id
-  cidr_block        = cidrsubnet(var.cidr_block, 8, 4)
-  availability_zone = var.avail_zones[1]
-
-  tags = {
-    Name = "lab04-private-subnet-2"
-    Type = "Private"
   }
 }
 
@@ -78,6 +56,7 @@ resource "aws_internet_gateway" "lab04-igw" {
 
 # Create the Elastic IP to be used by the NAT gateway.
 resource "aws_eip" "lab04-eip-nat" {
+  count = length(var.avail_zones)
   vpc = true
 }
 
