@@ -115,32 +115,11 @@ Finally, create your working directory. For this lab, I called my working direct
 
 ### Install Terraform
 
-To install Terraform, we can use the official documentation from Hashicorp which can be accessed through the first link below. Similarly, you can also follow the second link to install Terraform through WSL.
+To install Terraform, we have these options:
 
-- [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-
-- [Configuring Terraform on Windows 10 Linux Sub-System](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/configuring-terraform-on-windows-10-linux-sub-system/ba-p/393845)
-
-For the second link, here's a summary of commands. 
-
-```bash
-sudo apt-get update 
-sudo apt-get upgrade 
-sudo apt-get install unzip 
-```
-```bash
-wget <terraform_url> -O terraform.zip;
-```
-```bash
-wget https://releases.hashicorp.com/terraform/1.2.1/terraform_1.2.1_windows_386.zip \
--O terraform.zip
-```
-```bash
-unzip terraform.zip;
-rm terraform.zip; 
-```
-
-You need to get the most recent download URL from the Terraform [download page](https://www.terraform.io/downloads) first before unzipping the file. If you're running WSL on a Windows machine, right-click on any of the available packages for Linux.
+- we can use the [official documentation from Hashicorp](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+- install Terraform through [WSL](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/configuring-terraform-on-windows-10-linux-sub-system/ba-p/393845)
+- run the [setup-terraform.sh](./setup-terraform.sh) script
 
 After installing, verify.
 ```bash
