@@ -1,4 +1,4 @@
-# lab04_VPC_with_EC2_Nginx
+# lab04_Advanced_VPC_ALB_EC2
 #---------------------------------------------------------------------
 # This terraform template deploys a VPC with 2 public subnets that has 
 # a security group, an internet gateway, a NAT gateway, and an 

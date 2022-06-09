@@ -1,10 +1,7 @@
-# lab04_VPC_with_EC2_Nginx
+# lab05_Advanced_VPC_ALB_EC2_Simplified
 #---------------------------------------------------------------------
-# This terraform template deploys a VPC with 2 public subnets that has 
-# a security group, an internet gateway, a NAT gateway, and an 
-# Application loadbalancer. Traffic will be loadbalanced between the 
-# EC2 instances in the autoscaling group. Finally, the instances are 
-# bootstrapped with an NGINX webserver.
+# Refactored the main.tf for lab04 by using count_meta for 
+# subnets and route tables
 #---------------------------------------------------------------------
 
 resource "aws_vpc" "lab04-vpc" {

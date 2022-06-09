@@ -1,5 +1,5 @@
 
-# Terraform Projects
+# 101 Terraform Projects
 
 This repository contains all the Terraform projects that I've worked on and I'm currently working on. The goal is "terraforming" different deployments that includes:
 
@@ -10,7 +10,7 @@ This repository contains all the Terraform projects that I've worked on and I'm 
 - Confluent Cloud resources
 - Terraform tied up with Ansible and Jenkins
 
-Before we began, make sure to read go through some of the prre-requisites that you need to install on your local machine.
+Before we begin, make sure to go through some of the pre-requisites that you need to install on your local machine.
 
 ## Pre-requisites
 
