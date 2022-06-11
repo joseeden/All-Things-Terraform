@@ -12,4 +12,5 @@ app_instance_type     = "t3.micro"
 db_instance_type      = "t3.micro"
 
 # AMI for bastion and mongodb
+# Ubuntu Server 22.04 LTS (HVM), SSD Volume Type
 instance_ami = "ami-04d9e855d716f9c99"

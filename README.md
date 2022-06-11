@@ -147,6 +147,6 @@ We will also need a keypair to connect to our EC2 instances. You can create the 
 
 </details>
 
-## References
+## Resources
 
 - [Terraform 1.0 - Provisioning AWS Infrastructure](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)

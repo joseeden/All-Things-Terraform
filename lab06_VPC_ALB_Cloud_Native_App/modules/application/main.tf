@@ -14,7 +14,9 @@ resource "aws_launch_template" "lab06-apptemplate" {
     resource_type = "instance"
 
     tags = {
-      Name  = "lab06-frontendApp"
+      Name  = "lab06-frontend-app"
+      Owner = "Eden-Jose"
+
     }
   }
 
@@ -136,7 +138,10 @@ resource "aws_autoscaling_group" "lab06-asg" {
   max_size         = var.asg_max_size
   min_size         = var.asg_min_size
 
-  target_group_arns = [aws_alb_target_group.lab06-tg-webserver.arn, aws_alb_target_group.lab06-tg-api.arn]
+  target_group_arns = [
+    aws_alb_target_group.lab06-tg-webserver.arn, 
+    aws_alb_target_group.lab06-tg-api.arn
+    ]
 
   launch_template {
     id      = aws_launch_template.lab06-apptemplate.id

@@ -13,7 +13,7 @@ module "security" {
   source = "./modules/security"
 
   vpc_id         = module.network.vpc_id
-  workstation_ip = var.workstation_ip
+  workstation_ip = var.my_ip
 
   depends_on = [
     module.network

@@ -6,7 +6,7 @@ echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongod
 apt-get -y update
 apt-get install -y mongodb-org
 
-# Configure
+# Configure the conf file
 cat > /etc/mongod.conf << EOF
 storage:
   dbPath: /var/lib/mongodb
