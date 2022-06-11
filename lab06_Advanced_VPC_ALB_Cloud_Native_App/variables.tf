@@ -5,17 +5,17 @@ variable "aws_region" {
   type        = string
 }
 
-variable "my_credentials" {
-  description = "Credentials to be used to connect to AWS"
-  type        = list(string)
-}
-
 variable "my_profile" {
   description = "Profile to be used to connect to AWS"
   type        = string
 }
 
 # Variables for creating the VPC and EC2 instances
+
+variable "my_credentials" {
+  description = "Credentials to be used to connect to AWS"
+  type        = string
+}
 
 variable "instance_type" {
   type = string

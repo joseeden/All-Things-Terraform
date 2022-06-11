@@ -31,8 +31,8 @@ echo starting mongo...
 systemctl start mongod
 
 echo preparing mongodb data population script...
-mkdir -p /tmp/cloudacademy-app
-cd /tmp/cloudacademy-app
+mkdir -p /tmp/lab06-app
+cd /tmp/lab06-app
 
 # Generates a file containing sample data which will populate the DB
 cat > db.setup.js << EOF
