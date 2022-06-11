@@ -30,6 +30,14 @@ Follow these steps to [setup your Visual Studio Code.](../README.md#pre-requisit
  
 ----------------------------------------------
 
+### Configure the Credentials Files
+
+To be able to connect from your local machine to your AWS account, you will need to create a credentials file.
+
+Follow these steps to [configure the Credentials File](../README.md#pre-requisites)  
+
+----------------------------------------------
+
 ### Install Terraform
 
 To use Terraform, it needs to be installed on our local machine.

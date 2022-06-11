@@ -14,6 +14,13 @@ Before we begin, make sure to go through some of the pre-requisites that you nee
 
 ## Pre-requisites
 
+There are a couple of must-dos before we can start the labs. 
+If you're using AWS for your labs, please follow this guide,
+
+<details><summary> Pre-requisites: AWS </summary>
+ 
+</details>
+
 ### Setup Keys and Permissions
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-eden**.
@@ -47,7 +54,21 @@ Click the View tab and then Extensions. In the search bar, type in the extension
 
 ![](Images/tfextension-aws.png)  
 
-Once installed, you should see the the AWS icon on the left panel and **Connect to AWS** in the Explorer tab. Next, edit the credentials profile.
+Once installed, you should see the the AWS icon on the left panel and **Connect to AWS** in the Explorer tab. 
+
+#### Terraform Extension
+
+In the Extensions panel of VSCode, search for the Terraform extension. There's an official extension from Hashicorp but it is still buggy during the creation of this notes thus I suggest to install the extension from Anton Kulikov.
+
+![](Images/tfextension1.png)  
+
+Finally, create your working directory. For this lab, I called my working directory "lab01_build_dev_env".
+
+----------------------------------------------
+
+### Configure the Credentials File
+
+After you've installed the extension, you will need to configure the credentials profile. This will allow you to connect to your AWS account.
 
 ```bash
 View --> Command Palette --> AWS: Create Credentials Profile
@@ -101,15 +122,6 @@ To add another region, click the three dots at the Explorer tab and select **Sho
 
 ![](Images/tfshowhideregions.png)  
 ![](Images/tfshowregionssingapore.png) 
-
-
-#### Terraform Extension
-
-In the Extensions panel of VSCode, search for the Terraform extension. There's an official extension from Hashicorp but it is still buggy during the creation of this notes thus I suggest to install the extension from Anton Kulikov.
-
-![](Images/tfextension1.png)  
-
-Finally, create your working directory. For this lab, I called my working directory "lab01_build_dev_env".
 
 ----------------------------------------------
 
