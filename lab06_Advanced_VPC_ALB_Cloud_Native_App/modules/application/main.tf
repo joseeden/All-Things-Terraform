@@ -1,73 +1,3 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  # Canonical
-  owners = ["099720109477"]
-}
-
-#====================================
-
-# data "template_cloudinit_config" "config" {
-#   gzip          = false
-#   base64_encode = false
-
-#   #userdata
-#   part {
-#     content_type = "text/x-shellscript"
-#     content      = <<-EOF
-#     #! /bin/bash
-#     apt-get -y update
-#     apt-get -y install nginx
-#     apt-get -y install jq
-
-#     ALB_DNS=${aws_lb.alb1.dns_name}
-#     MONGODB_PRIVATEIP=${var.mongodb_ip}
-    
-#     mkdir -p /tmp/cloudacademy-app
-#     cd /tmp/cloudacademy-app
-
-#     echo ===========================
-#     echo FRONTEND - download latest release and install...
-#     mkdir -p ./voteapp-frontend-react-2020
-#     pushd ./voteapp-frontend-react-2020
-#     curl -sL https://api.github.com/repos/cloudacademy/voteapp-frontend-react-2020/releases/latest | jq -r '.assets[0].browser_download_url' | xargs curl -OL
-#     INSTALL_FILENAME=$(curl -sL https://api.github.com/repos/cloudacademy/voteapp-frontend-react-2020/releases/latest | jq -r '.assets[0].name')
-#     tar -xvzf $INSTALL_FILENAME
-#     rm -rf /var/www/html
-#     cp -R build /var/www/html
-#     cat > /var/www/html/env-config.js << EOFF
-#     window._env_ = {REACT_APP_APIHOSTPORT: "$ALB_DNS"}
-#     EOFF
-#     popd
-
-#     echo ===========================
-#     echo API - download latest release, install, and start...
-#     mkdir -p ./voteapp-api-go
-#     pushd ./voteapp-api-go
-#     curl -sL https://api.github.com/repos/cloudacademy/voteapp-api-go/releases/latest | jq -r '.assets[] | select(.name | contains("linux-amd64")) | .browser_download_url' | xargs curl -OL
-#     INSTALL_FILENAME=$(curl -sL https://api.github.com/repos/cloudacademy/voteapp-api-go/releases/latest | jq -r '.assets[] | select(.name | contains("linux-amd64")) | .name')
-#     tar -xvzf $INSTALL_FILENAME
-#     #start the API up...
-#     MONGO_CONN_STR=mongodb://$MONGODB_PRIVATEIP:27017/langdb ./api &
-#     popd
-
-#     systemctl restart nginx
-#     systemctl status nginx
-#     echo fin v1.00!
-
-#     EOF    
-#   }
-# }
 
 #====================================
 
@@ -78,6 +8,7 @@ resource "aws_launch_template" "lab06-apptemplate" {
   instance_type          = var.instance_type
   key_name               = var.my_credentials
   vpc_security_group_ids = [var.webserver_sg_id]
+  user_data              = base64encode(data.template_cloudinit_config.config.rendered)
 
   tag_specifications {
     resource_type = "instance"
@@ -87,13 +18,12 @@ resource "aws_launch_template" "lab06-apptemplate" {
     }
   }
 
-  user_data = base64encode(data.template_cloudinit_config.config.rendered)
 }
 
 #====================================
 
-resource "aws_lb" "lab06-alb1" {
-  name               = "alb1"
+resource "aws_lb" "lab06-alb" {
+  name               = "lab06-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_sg_id]
@@ -101,20 +31,13 @@ resource "aws_lb" "lab06-alb1" {
 
   enable_deletion_protection = false
 
-  /*
-  access_logs {
-    bucket  = aws_s3_bucket.lb_logs.bucket
-    prefix  = "test-lb"
-    enabled = true
-  }
-  */
-
   tags = {
     Environment = "Prod"
   }
 }
 
 resource "aws_alb_target_group" "lab06-tg-webserver" {
+  name     = "lab06-tg-webserver"
   vpc_id   = var.vpc_id
   port     = 80
   protocol = "HTTP"
@@ -129,6 +52,7 @@ resource "aws_alb_target_group" "lab06-tg-webserver" {
 }
 
 resource "aws_alb_target_group" "lab06-tg-api" {
+  name     = "lab06-tg-api"
   vpc_id   = var.vpc_id
   port     = 8080
   protocol = "HTTP"
@@ -143,7 +67,8 @@ resource "aws_alb_target_group" "lab06-tg-api" {
 }
 
 resource "aws_alb_listener" "lab06-listener-front_end" {
-  load_balancer_arn = aws_lb.lab06-alb1.arn
+  name              = "lab06-listener-front_end"
+  load_balancer_arn = aws_lb.lab06-alb.arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -154,6 +79,7 @@ resource "aws_alb_listener" "lab06-listener-front_end" {
 }
 
 resource "aws_alb_listener_rule" "lab06-listener-frontend_rule1" {
+  name         = "lab06-listener-frontend_rule1"
   listener_arn = aws_alb_listener.lab06-listener-front_end.arn
   priority     = 100
 
@@ -170,6 +96,7 @@ resource "aws_alb_listener_rule" "lab06-listener-frontend_rule1" {
 }
 
 resource "aws_alb_listener_rule" "lab06-listener-api_rule1" {
+  name         = "lab06-listener-api_rule1"
   listener_arn = aws_alb_listener.lab06-listener-front_end.arn
   priority     = 10
 
@@ -192,7 +119,8 @@ resource "aws_alb_listener_rule" "lab06-listener-api_rule1" {
 
 #====================================
 
-resource "aws_autoscaling_group" "asg" {
+resource "aws_autoscaling_group" "lab06-asg" {
+  name                = "lab06-asg"
   vpc_zone_identifier = var.private_subnets
 
   desired_capacity = var.asg_desired
@@ -207,15 +135,3 @@ resource "aws_autoscaling_group" "asg" {
   }
 }
 
-# data "aws_instances" "application" {
-#   instance_tags = {
-#     Name  = "FrontendApp"
-#     Owner = "CloudAcademy"
-#   }
-
-#   instance_state_names = ["pending", "running"]
-
-#   depends_on = [
-#     aws_autoscaling_group.asg
-#   ]
-# }
