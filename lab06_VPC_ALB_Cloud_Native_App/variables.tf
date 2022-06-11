@@ -48,7 +48,7 @@ variable "cidr_block" {
   type = string
 }
 
-variable "workstation_ip" {
+variable "my_ip" {
   type = string
 }
 

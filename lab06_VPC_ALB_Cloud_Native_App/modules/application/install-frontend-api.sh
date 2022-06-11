@@ -3,6 +3,9 @@ apt-get -y update
 apt-get -y install nginx
 apt-get -y install jq
 
+# Creates the variables
+# ALB_DNS defined where the frontend will forward the API requests to.
+# MONGODB_PRIVATEIP defines where the data will be written to
 ALB_DNS=${aws_lb.lab06-alb.dns_name}
 MONGODB_PRIVATEIP=${var.mongodb_ip}
 
