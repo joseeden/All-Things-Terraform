@@ -1,6 +1,8 @@
 
 ## Lab 05: Advanced VPC with ALB and EC2 instances - Simplified
 
+> This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
+
 This is a continuation of the previous lab on **Advanced VPC with ALB and EC2 instances.** In this lab, we'll be simplifying the configuration by using "count meta" argument.
 
 We'll still use the same set of files.

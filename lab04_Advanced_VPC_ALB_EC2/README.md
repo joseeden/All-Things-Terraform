@@ -1,14 +1,17 @@
 
 ## Lab 04: Advanced VPC with ALB and EC2 instances
 
-> *This lab is based on [cloudacademy/terraform-aws](https://github.com/cloudacademy/terraform-aws) github page. Note that this lab builds on top of the previous lab on "VPC with EC2 instance"*
+> This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
+
+Note that this lab builds on top of the previous lab on "VPC with EC2 instance"*
 
 Before we begin, make sure you've setup the following pre-requisites
 
   - [Setup Keys and Permissions](../README.md#pre-requisites)
   - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
+  - [Configure the Credentials File](../README.md#pre-requisites) 
   - [Install Terraform](../README.md#pre-requisites) 
-
+  
 In this lab, we'll create the following:
 
 - a VPC spanning two availability zones
