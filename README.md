@@ -19,8 +19,6 @@ If you're using AWS for your labs, please follow this guide,
 
 <details><summary> Pre-requisites: AWS </summary>
  
-</details>
-
 ### Setup Keys and Permissions
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-eden**.
@@ -137,3 +135,18 @@ After installing, verify.
 ```bash
 $ terraform -v 
 ```
+
+----------------------------------------------
+
+### Create the keypair
+
+We will also need a keypair to connect to our EC2 instances. You can create the keypair through any of the following methods.
+
+- [Create key pairs through the AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html)
+- [Create key pairs through the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-keypairs.html)
+
+</details>
+
+## References
+
+- [Terraform 1.0 - Provisioning AWS Infrastructure](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
