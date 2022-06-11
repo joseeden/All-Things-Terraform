@@ -15,10 +15,9 @@ Before we begin, make sure to go through some of the pre-requisites that you nee
 ## Pre-requisites
 
 There are a couple of must-dos before we can start the labs. 
-If you're using AWS for your labs, please follow this guide,
 
-<details><summary> Pre-requisites: AWS </summary>
- 
+<details><summary> If you're using AWS </summary>
+
 ### Setup Keys and Permissions
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-eden**.
@@ -136,6 +135,9 @@ After installing, verify.
 $ terraform -v 
 ```
 
+### Install Terraform on Windows
+
+
 ----------------------------------------------
 
 ### Create the keypair
@@ -145,6 +147,12 @@ We will also need a keypair to connect to our EC2 instances. You can create the 
 - [Create key pairs through the AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html)
 - [Create key pairs through the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-keypairs.html)
 
+</details>
+
+
+<details><summary> If you're using Azure </summary>
+
+ 
 </details>
 
 ## Resources
