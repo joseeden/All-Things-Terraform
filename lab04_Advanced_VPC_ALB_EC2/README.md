@@ -24,12 +24,11 @@ In this lab, we'll create the following:
 
 ![](../Images/lab4diagram.png)  
 
-Start with creating the project directory and initializing it.
+Start with creating the project directory.
 
 ```bash
 $ mkdir lab04_Advanced_VPC_ALB_EC2
 $ cd lab04_Advanced_VPC_ALB_EC2
-$ terraform init
 ```
 
 ----------------------------------------------
@@ -460,6 +459,12 @@ $ terraform console
 From the main.tf, we used a **aws_launch_template** instead of an **aws_instance** resource. Here we define the launch configurations for the instances that will be launched in the auto-scaling group. The template also utilize a **webserver.tpl** template which will bootstrap the EC2 instances with NGINX webserver.
 
 ### Validate
+
+Initialize the working directory.
+
+```bash
+$ terraform init 
+```
 
 To correct any formatting errors,
 

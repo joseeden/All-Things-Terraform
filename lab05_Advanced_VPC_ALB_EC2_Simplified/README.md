@@ -426,6 +426,12 @@ Before running any terraform commands, we need to [assign our IP](https://whatis
 export TF_VAR_my_ip=1.2.3.4/32 
 ```
 
+Initialize the working directory.
+
+```bash
+$ terraform init 
+```
+
 Check if there are errors with the formatting.
 
 ```bash
