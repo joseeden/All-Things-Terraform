@@ -3,7 +3,7 @@
 > This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
 
 
-Before we begin, make sure you've setup the following pre-requisites
+Before we begin, make sure you've setup the following pre-requisites:
 
   - [Setup Keys and Permissions](../README.md#pre-requisites)
   - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
