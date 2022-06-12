@@ -161,3 +161,4 @@ We will also need a keypair to connect to our EC2 instances. You can create the 
 - [Terraform 1.0 - Provisioning AWS Infrastructure](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
 - [Applying Graph Theory to Infrastructure as Code](https://www.youtube.com/watch?v=Ce3RNfRbdZ0)
 - [AWS DynamoDB resource not found exception](https://stackoverflow.com/questions/40192304/aws-dynamodb-resource-not-found-exception)
+- [Hands-On Infrastructure Automation with Terraform on AWS](https://github.com/PacktPublishing/Hands-on-Infrastructure-Automation-with-Terraform-on-AWS)
