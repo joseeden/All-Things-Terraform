@@ -122,7 +122,7 @@ To add another region, click the three dots at the Explorer tab and select **Sho
 
 ----------------------------------------------
 
-### Install Terraform
+### Install Terraform on Linux
 
 To install Terraform, we have these options:
 
@@ -137,6 +137,7 @@ $ terraform -v
 
 ### Install Terraform on Windows
 
+There is a lab dedicated to [installing Terraform on a Windows Server using Powershell](./lab07_Install_Terraform_on_Windows_Server/README.md).
 
 ----------------------------------------------
 
@@ -150,11 +151,12 @@ We will also need a keypair to connect to our EC2 instances. You can create the 
 </details>
 
 
-<details><summary> If you're using Azure </summary>
+<!-- <details><summary> If you're using Azure </summary>
 
  
-</details>
+</details> -->
 
 ## Resources
 
 - [Terraform 1.0 - Provisioning AWS Infrastructure](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
+- [Applying Graph Theory to Infrastructure as Code](https://www.youtube.com/watch?v=Ce3RNfRbdZ0)
