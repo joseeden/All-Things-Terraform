@@ -21,12 +21,11 @@ In this lab, we'll create the following:
 ![](../Images/lab3ex11.png)  
 
 
-Start with creating the project directory and initializing it.
+Start with creating the project director.
 
 ```bash
 $ mkdir lab03_VPC_with_EC2_Nginx
 $ cd lab03_VPC_with_EC2_Nginx
-$ terraform init
 ```
 
 ### Create the Provider file
@@ -307,6 +306,12 @@ Before we proceed, let's get our IP from [whatsmyip.](https://whatismyipaddress.
 
 ```bash
 $ export TF_VAR_my_ip=1.2.3.4/32 
+```
+
+Initialize the working directory.
+
+```bash
+$ terraform init 
 ```
 
 To check the environment variables,

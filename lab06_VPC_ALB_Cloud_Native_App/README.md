@@ -30,12 +30,11 @@ Here's the diagram as reference.
 
 ![](../Images/lab6diagram1.png)  
 
-Start with creating the project directory and initializing it.
+Start with creating the project directory.
 
 ```bash
 $ mkdir lab06_Advanced_VPC_ALB_Cloud_Native_App
 $ cd lab06_Advanced_VPC_ALB_Cloud_Native_App
-$ terraform init
 ```
 
 ----------------------------------------------
@@ -1140,6 +1139,12 @@ But first, let's export our [machine's IP](https://whatismyipaddress.com/) as a 
 
 ```bash
 $ export TF_VAR_my_ip=1.2.3.4/32 
+```
+
+Initialize the working directory.
+
+```bash
+$ terraform init 
 ```
 
 Check the formatting of the config files and then verify if the the configurations are syntactically valid.
