@@ -3,7 +3,9 @@
 
 In this lab, we'll be using Powershell to install Terraform on a Windows Server. Before we start, make sure to [launch a Windows Server through the AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html).
 
-![](../Images/lab7diagram2.png)  
+<p align="center">
+    <img src="../Images/lab7diagram2.png">
+</p>
 
 Once your Windows instance is up and running, select it and hit **Connect**. Choose the Session Manager and click **Connect.**
 
