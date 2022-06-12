@@ -318,6 +318,11 @@ The new graph should now display the flowchart which shows that implicit depende
 ![](../Images/lab8newcorrectgraph.png)  
 
 
+**Comparison of the code**
+
+![](../Images/lab8configwrong.png)![](../Images/lab8configright.png)  
+
+
 ### Cleanup
 
 To delete all the resources, just run the **destroy** command.
