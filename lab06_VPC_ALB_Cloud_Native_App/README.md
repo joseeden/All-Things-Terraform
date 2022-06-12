@@ -1205,6 +1205,13 @@ Verify this response by checking the DNS name through a web browser. We can now 
 
 > *NOTE: As of 2022, there seems to be a bug on the application because it doesn't load the full webpage. As such, we can only test up to this point. The important thing is we're able to provision the resources and deploy the application*
 
+
+The webpage should look like this.
+
+![](../Images/lab6votingappwebpageexpected.png)  
+
+However when I try to open the ALB's DNS name in the browser, I'm getting an incomplete webpage which doesn't display the voting tick boxes for the languages.
+
 ![](../Images/lab6votingappwebpageincomplete.png)  
 
 
