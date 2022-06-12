@@ -1,4 +1,6 @@
-#====================================
+# lab06 - Provisioning a VPC with ALB and autoscaling group and 
+# deploying a cloud-native application
+#---------------------------------------------------------------
 
 module "network" {
   source = "./modules/network"
@@ -6,8 +8,6 @@ module "network" {
   availability_zones = var.availability_zones
   cidr_block         = var.cidr_block
 }
-
-#====================================
 
 module "security" {
   source = "./modules/security"
@@ -19,8 +19,6 @@ module "security" {
     module.network
   ]
 }
-
-#====================================
 
 module "bastion" {
   source = "./modules/bastion"
@@ -37,8 +35,6 @@ module "bastion" {
   ]
 }
 
-#====================================
-
 module "storage" {
   source        = "./modules/storage"
   instance_ami  = var.instance_ami
@@ -52,8 +48,6 @@ module "storage" {
     module.security
   ]
 }
-
-#====================================
 
 module "application" {
   source = "./modules/application"
