@@ -20,3 +20,8 @@ variable "my_profile" {
   type        = string
   default     = "vscode-dev"
 }
+
+variable "my_ip" {
+  description = "My local machine's IP"
+  type        = string
+}
