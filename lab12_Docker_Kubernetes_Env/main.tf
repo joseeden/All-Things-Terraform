@@ -3,9 +3,9 @@
 # internet gateway, route table, a security group, and one EC2 instance.
 
 resource "aws_vpc" "tst-vpc" {
-  cidr_block           = "10.123.0.0/16"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  cidr_block           = var.cidr_block
+  enable_dns_hostnames = var.enable_dns_hostnames
+  enable_dns_support   = var.enable_dns_support
 
   tags = {
     Name = "tst-vpc"
@@ -14,9 +14,9 @@ resource "aws_vpc" "tst-vpc" {
 
 resource "aws_subnet" "tst-public-subnet-1" {
   vpc_id                  = aws_vpc.tst-vpc.id
-  cidr_block              = "10.123.1.0/24"
-  map_public_ip_on_launch = true
-  availability_zone       = "ap-southeast-1a"
+  cidr_block              = cidrsubnet(var.cidr_block, 8, 1)
+  map_public_ip_on_launch = var.map_public_ip_on_launch
+  availability_zone       = var.avail_zone[0]
 
   tags = {
     Name = "tst-public-subnet-1"
@@ -80,8 +80,9 @@ resource "aws_key_pair" "tst-keypair" {
 }
 
 resource "aws_instance" "tst-node-1" {
-  instance_type          = "t2.micro"
+  instance_type          = var.instance_type
   ami                    = data.aws_ami.tst-ami.id
+  # ami                    = var.aws_ami
   key_name               = aws_key_pair.tst-keypair.id
   vpc_security_group_ids = [aws_security_group.tst-sg-1.id]
   subnet_id              = aws_subnet.tst-public-subnet-1.id
@@ -102,6 +103,6 @@ resource "aws_instance" "tst-node-1" {
   }
 
   tags = {
-    Name = "tst-node-1"
+    Name = "tst-docker-k8s"
   }
 }
