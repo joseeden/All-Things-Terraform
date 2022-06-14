@@ -5,14 +5,12 @@ variable "aws_region" {
 
 variable "my_credentials" {
   description = "Credentials to be used to connect to AWS"
-  type        = string
-  default     = "/mnt/c/Users/Eden.Jose/.aws/credentials"
+  type        = list(string)
 }
 
 variable "my_profile" {
   description = "Profile to be used to connect to AWS"
   type        = string
-  default     = "vscode-dev"
 }
 
 variable "my_ip" {
@@ -30,17 +28,17 @@ variable "avail_zone" {
   type        = list(string)
 }
 
-variable "map_public_ip_on_launch"{
+variable "map_public_ip_on_launch" {
   description = "Associate public IP during creation"
   type        = bool
 }
 
-variable "enable_dns_hostnames"{
+variable "enable_dns_hostnames" {
   description = "Enable_dns_hostnames"
   type        = bool
 }
 
-variable "enable_dns_support"{
+variable "enable_dns_support" {
   description = "Enable_dns_support"
   type        = bool
 }

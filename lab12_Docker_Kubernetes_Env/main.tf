@@ -59,7 +59,7 @@ resource "aws_security_group" "tst-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["1.2.3.4/32"]
+    cidr_blocks = [var.my_ip]
   }
 
   egress {
@@ -74,14 +74,15 @@ resource "aws_security_group" "tst-sg-1" {
   }
 }
 
+
 resource "aws_key_pair" "tst-keypair" {
   key_name   = "tst-keypair"
   public_key = file("~/.ssh/tst-keypair.pub")
 }
 
 resource "aws_instance" "tst-node-1" {
-  instance_type          = var.instance_type
-  ami                    = data.aws_ami.tst-ami.id
+  instance_type = var.instance_type
+  ami           = data.aws_ami.tst-ami.id
   # ami                    = var.aws_ami
   key_name               = aws_key_pair.tst-keypair.id
   vpc_security_group_ids = [aws_security_group.tst-sg-1.id]
