@@ -64,6 +64,15 @@ Generating public/private ed25519 key pair.
 Enter file in which to save the key (/home/joseeden/.ssh/id_ed25519): ~/.ssh/tst-keypair  
 ```
 
+Some sidenote: If you are using WSL2 on Windows, you could have two actual ".ssh" directory locations.
+
+- "/home/username/.ssh"
+- "/mnt/c/User/username/.ssh"
+
+This could cause some issue when you try connecting your VSCode to the remote instance via SSH since VSCode will be looking for the keypair in the "/mnt/c/.." directory while your key is in "/home/username/.ssh".
+
+As a workaround, make sure that the key is present in both directories.
+
 ### A Few Reminders
 
 A few reminders about this automation:
