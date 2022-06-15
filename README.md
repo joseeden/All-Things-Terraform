@@ -41,8 +41,8 @@ Next step is to create the credentials file. You can do this after installing th
 </details>
 
 <details><summary> Setup your Environment and Install Extensions </summary>
-
-### Setup your Environment and Install Extensions 
+<br>
+<!-- ### Setup your Environment and Install Extensions  -->
 
 For this one, I'm using VS Code. We'll set it up with the following extensions:
 
