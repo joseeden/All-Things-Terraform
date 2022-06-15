@@ -19,8 +19,8 @@ There are a couple of must-dos before we can start the labs.
 If you're using AWS:
 
 <details><summary> Setup Keys and Permissions </summary>
-<br>
-<!-- ### Setup Keys and Permissions -->
+
+### Setup Keys and Permissions
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-eden**.
 
@@ -41,8 +41,8 @@ Next step is to create the credentials file. You can do this after installing th
 </details>
 
 <details><summary> Setup your Environment and Install Extensions </summary>
-<br>
-<!-- ### Setup your Environment and Install Extensions  -->
+
+### Setup your Environment and Install Extensions 
 
 For this one, I'm using VS Code. We'll set it up with the following extensions:
 
