@@ -7,6 +7,7 @@ This repository contains all the Terraform projects that I've worked on and I'm 
 - Provisioning Azure resources
 - Provisioning GCP resources
 - Amazon EKS clusters
+- Confluent Cloud resources
 - Terraform tied up with Ansible and Jenkins
 
 Before we begin, make sure to go through some of the pre-requisites that you need to install on your local machine.
@@ -18,8 +19,8 @@ There are a couple of must-dos before we can start the labs.
 If you're using AWS:
 
 <details><summary> Setup Keys and Permissions </summary>
-
-### Setup Keys and Permissions
+<br>
+<!-- ### Setup Keys and Permissions -->
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-eden**.
 
@@ -127,6 +128,8 @@ To add another region, click the three dots at the Explorer tab and select **Sho
 
 </details>
 
+<details><summary> Install Terraform on Linux </summary>
+
 ### Install Terraform on Linux
 
 To install Terraform, we have these options:
@@ -140,10 +143,17 @@ After installing, verify.
 $ terraform -v 
 ```
 
+</details>
+
+<details><summary> Install Terraform on Windows </summary>
+
 ### Install Terraform on Windows
 
 There is a lab dedicated to [installing Terraform on a Windows Server using Powershell](./lab07_Install_Terraform_on_Windows_Server/README.md).
 
+</details>
+
+<details><summary> Install AWS CLI and Configure with the Credentials </summary>
 
 ### Install AWS CLI and Configure with the Credentials
 
@@ -179,7 +189,9 @@ Default output format [None]:
 
 You can then choose a default region. For this lab, we'll be using ap-southeast-1 (Singapore.)
 
-----------------------------------------------
+</details>
+
+<details><summary> Create the keypair</summary>
 
 ### Create the keypair
 
