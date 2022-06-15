@@ -7,7 +7,6 @@ This repository contains all the Terraform projects that I've worked on and I'm 
 - Provisioning Azure resources
 - Provisioning GCP resources
 - Amazon EKS clusters
-- Confluent Cloud resources
 - Terraform tied up with Ansible and Jenkins
 
 Before we begin, make sure to go through some of the pre-requisites that you need to install on your local machine.
