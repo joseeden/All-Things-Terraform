@@ -1,5 +1,5 @@
 
-# 101 Terraform Projects
+# All Things Terraform
 
 This repository contains all the Terraform projects that I've worked on and I'm currently working on. The goal is "terraforming" different deployments that includes:
 
