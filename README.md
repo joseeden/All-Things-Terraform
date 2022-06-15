@@ -16,7 +16,9 @@ Before we begin, make sure to go through some of the pre-requisites that you nee
 
 There are a couple of must-dos before we can start the labs. 
 
-<details><summary> If you're using AWS </summary>
+If you're using AWS:
+
+<details><summary> Setup Keys and Permissions </summary>
 
 ### Setup Keys and Permissions
 
@@ -36,7 +38,9 @@ Once user is created, you should now see the user name, access ky ID, and Secret
 
 Next step is to create the credentials file. You can do this after installing the extensions.
 
-----------------------------------------------
+</details>
+
+<details><summary> Setup your Environment and Install Extensions </summary>
 
 ### Setup your Environment and Install Extensions 
 
@@ -61,7 +65,9 @@ In the Extensions panel of VSCode, search for the Terraform extension. There's a
 
 Finally, create your working directory. For this lab, I called my working directory "lab01_build_dev_env".
 
-----------------------------------------------
+</details>
+
+<details><summary> Configure the Credentials File </summary>
 
 ### Configure the Credentials File
 
@@ -120,7 +126,7 @@ To add another region, click the three dots at the Explorer tab and select **Sho
 ![](Images/tfshowhideregions.png)  
 ![](Images/tfshowregionssingapore.png) 
 
-----------------------------------------------
+</details>
 
 ### Install Terraform on Linux
 
