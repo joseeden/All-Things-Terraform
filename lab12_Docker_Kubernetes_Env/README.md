@@ -53,9 +53,9 @@ Follow these steps to [configure the Credentials File](../README.md#pre-requisit
 </details>
 
 
-### Create a Keypair on the AWS Console
+### Create a Keypair on your Terminal
 
-In your terminal, generate a keypair. You will use this later to connect to your instance. Make sure to name your keypair **tst-keypair** as this is the name of the keypair defined in the code
+In your terminal, generate a keypair. You will use this later to connect to your instance. Make sure to name your keypair **tst-keypair** as this is the name of the keypair defined in the code.
 
 ```bash
 $ ssh-keygen -t ed25519
@@ -69,7 +69,7 @@ Some sidenote: If you are using WSL2 on Windows, you could have two actual ".ssh
 - "/home/username/.ssh"
 - "/mnt/c/User/username/.ssh"
 
-This could cause some issue when you try connecting your VSCode to the remote instance via SSH since VSCode will be looking for the keypair in the "/mnt/c/.." directory while your key is in "/home/username/.ssh".
+This could cause some issue when you try to connect your VSCode to the remote instance via SSH since VSCode will be looking for the keypair in the "/mnt/c/.." directory while your key is in "/home/username/.ssh".
 
 As a workaround, make sure that the key is present in both directories.
 
