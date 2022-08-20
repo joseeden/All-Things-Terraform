@@ -127,6 +127,24 @@ Before we proceed, get you [computer's IP](https://whatismyipaddress.com/) and e
 $ export TF_VAR_my_ip=1.2.3.4/32
 ```
 
+Another way to get your IP is through the terminal.
+
+```bash
+$ curl ipecho.net/plain 
+```
+
+We can then pass this to the variable.
+
+```bash
+$ export TF_VAR_my_ip=$(curl ipecho.net/plain) 
+```
+
+Verify.
+
+```bash
+$ echo $TF_VAR_my_ip 
+```
+
 Do a preview of the changes before actually applying them. This makes sure we catch any possible error before we actually run the automation. 
 
 ```bash
