@@ -116,7 +116,7 @@ resource "aws_instance" "node-master" {
   }
 
   root_block_device {
-    volume_size = 10
+    volume_size = 20
   }
 
   tags = {
@@ -160,7 +160,7 @@ resource "aws_instance" "node-worker1" {
   }
 
   root_block_device {
-    volume_size = 10
+    volume_size = 20
   }
 
   tags = {
@@ -204,7 +204,7 @@ resource "aws_instance" "node-worker2" {
   }
 
   root_block_device {
-    volume_size = 10
+    volume_size = 20
   }
 
   tags = {
@@ -248,7 +248,7 @@ resource "aws_instance" "node-worker3" {
   }
 
   root_block_device {
-    volume_size = 10
+    volume_size = 20
   }
 
   tags = {
