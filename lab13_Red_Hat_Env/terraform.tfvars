@@ -1,5 +1,7 @@
-my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
-my_profile     = "vscode-dev"
+# my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
+# my_profile     = "vscode-dev"
+my_credentials = ["/home/joseeden/.aws/credentials"]
+my_profile     = "default"
 
 aws_region = "ap-southeast-1"
 avail_zone = [

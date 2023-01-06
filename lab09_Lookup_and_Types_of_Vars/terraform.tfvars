@@ -1,7 +1,7 @@
 # Variables for setting up terraform
 aws_region     = "ap-southeast-1"
 my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
-my_profile     = "vscode-dev"
+my_profile     = "tf-user"
 
 # Variables for the lab
 cidr_block        = "10.0.0.0/16"
