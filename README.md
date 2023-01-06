@@ -22,7 +22,7 @@ If you're using AWS:
 
 ### Setup Keys and Permissions
 
-Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-eden**.
+Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-user**.
 
 ```bash
 1. IAM --> Users --> Add user 

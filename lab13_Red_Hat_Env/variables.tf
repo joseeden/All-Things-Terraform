@@ -10,6 +10,7 @@ variable "my_credentials" {
 
 variable "my_profile" {
   description = "Profile to be used to connect to AWS"
+  default     = "default"
   type        = string
 }
 
