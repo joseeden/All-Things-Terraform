@@ -215,7 +215,8 @@ This automation also sets up your VSCode for remote development. Download the [R
 Once you click it, you should see the IP of your instance there. Right-click, then "Connect to Host in New Window"
 
 Next, click Linux.
-When prompted if you want to proceed, choose Continue.
+
+When prompted "if you want to proceed", choose Continue.
 
 Once connected, you should now be able to open the files in the instance through VSCode.
 

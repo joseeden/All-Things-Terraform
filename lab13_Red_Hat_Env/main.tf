@@ -1,5 +1,4 @@
 
-
 # This terraform template deploys a VPC with one public subnet, 
 # internet gateway, route table, a security group, and one EC2 instance.
 
