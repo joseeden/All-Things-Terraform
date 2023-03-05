@@ -3,14 +3,12 @@
 
 This repository contains all the Terraform projects that I've worked on and I'm currently working on. The goal is "terraforming" different deployments that includes:
 
-- Provisioning AWS resources
-- Provisioning Azure resources
-- Provisioning GCP resources
-- Amazon EKS clusters
+- AWS resources
+- Azure resources
+- GCP resources
 - Confluent Cloud resources
-- Terraform tied up with Ansible and Jenkins
 
-Before we begin, make sure to go through some of the pre-requisites that you need to install on your local machine.
+Make sure to go through some of the pre-requisites below.
 
 ## Pre-requisites
 

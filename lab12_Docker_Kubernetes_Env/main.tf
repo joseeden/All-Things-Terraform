@@ -136,9 +136,9 @@ resource "aws_instance" "node-worker1" {
 
   connection {
     type        = "ssh"
+    host        = self.public_ip
     user        = "eden"
     private_key = file("~/.ssh/tst-kp-ubuntu")
-    host        = self.public_ip
   }
 
   provisioner "remote-exec" {
