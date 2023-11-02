@@ -22,7 +22,9 @@ If you're using AWS:
 
 ### Setup Keys and Permissions
 
-<kbd style="border: 1px solid #e0e0e0; padding: 10px; display: block; margin: 10px 0;">
+<!-- <kbd style="border: 1px solid #e0e0e0; padding: 10px; display: block; margin: 10px 0;"> -->
+
+<div style="border: 1px solid #e0e0e0; padding: 10px; display: block; margin: 10px 0;">
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-user**.
 
@@ -40,7 +42,7 @@ Once user is created, you should now see the user name, access ky ID, and Secret
 
 Next step is to create the credentials file. You can do this after installing the extensions.
 
-</kbd>
+</div>
 
 </details>
 
