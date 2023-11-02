@@ -8,7 +8,7 @@ View --> Command Palette --> AWS: Create Credentials Profile
 
 Populate the credentials file with the AWS Access key and secret access key from the CSV file you just downloaded earlier.  
 
-![](Images/tfcredentials.png)  
+![](../../../Images/tfcredentials.png)  
 
 
 The credentials file should be created with the text below. 
@@ -48,5 +48,5 @@ Back in the Explorer tab, click **Connect to AWS** and select the credentials pr
 
 To add another region, click the three dots at the Explorer tab and select **Show or hide regions**. We'll use Singapore region for this lab.
 
-![](Images/tfshowhideregions.png)  
-![](Images/tfshowregionssingapore.png) 
+![](../../../Images/tfshowhideregions.png)  
+![](../../../Images/tfshowregionssingapore.png) 
