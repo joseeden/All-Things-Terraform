@@ -19,4 +19,4 @@ In the Extensions panel of VSCode, search for the Terraform extension. There's a
 
 ![](../../../Images/tfextension1.png)  
 
-Finally, create your working directory. For this lab, I called my working directory "lab01_build_dev_env".
+Finally, create your working directory.
