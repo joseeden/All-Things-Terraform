@@ -18,7 +18,7 @@ There are a couple of must-dos before we can start the labs.
 
 If you're using AWS:
 
-<details><summary style="font-weight: normal; font-size: 1em; margin-bottom: 5px; border: 1px solid #e0e0e0; padding: 10px;"> Setup Keys and Permissions </summary>
+<details><summary> Setup Keys and Permissions </summary>
 
 ### Setup Keys and Permissions
 
