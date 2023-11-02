@@ -18,13 +18,11 @@ There are a couple of must-dos before we can start the labs.
 
 If you're using AWS:
 
-<details><summary> Setup Keys and Permissions </summary>
+<details><summary style="font-weight: normal; font-size: 1em; margin-bottom: 5px; border: 1px solid #e0e0e0; padding: 10px;"> Setup Keys and Permissions </summary>
 
 ### Setup Keys and Permissions
 
 <!-- <kbd style="border: 1px solid #e0e0e0; padding: 10px; display: block; margin: 10px 0;"> -->
-
-<div style="border: 1px solid #e0e0e0; padding: 10px; display: block; margin: 10px 0;">
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-user**.
 
