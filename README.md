@@ -20,6 +20,8 @@ If you're using AWS:
 
 <details><summary> Setup Keys and Permissions </summary>
 
+<div class="boxBorder">
+
 ### Setup Keys and Permissions
 
 Login to your AWS Console and go to IAM. You can choose a different username. I'm creating a user called **tf-user**.
@@ -37,6 +39,8 @@ Once user is created, you should now see the user name, access ky ID, and Secret
 ![](Images/builddevaws1.png)  
 
 Next step is to create the credentials file. You can do this after installing the extensions.
+
+</div>
 
 </details>
 
