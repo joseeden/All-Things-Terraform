@@ -20,7 +20,6 @@ If you're using AWS:
 
 <details><summary> Setup Keys and Permissions </summary>
 
-<div class="boxBorder">
 
 ### Setup Keys and Permissions
 
@@ -33,6 +32,9 @@ Login to your AWS Console and go to IAM. You can choose a different username. I'
 4. Key: "Name", Value: "tf-user" --> Next: Review
 5. Create User
 ```
+
+<div class="boxBorder">
+
 
 Once user is created, you should now see the user name, access ky ID, and Secret access key. Click the **Download .csv**
 
