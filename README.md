@@ -20,6 +20,10 @@ If you're using AWS:
 
 <details><summary> Setup Keys and Permissions </summary>
 
+<div class="warning" style='padding:0.1em; background-color:#E9D8FD; color:#69337A'>
+<span>
+<p style='margin-top:1em; text-align:center'>
+<p style='margin-left:1em;'>
 
 ### Setup Keys and Permissions
 
@@ -33,15 +37,16 @@ Login to your AWS Console and go to IAM. You can choose a different username. I'
 5. Create User
 ```
 
-<div class="boxBorder">
-
-
 Once user is created, you should now see the user name, access ky ID, and Secret access key. Click the **Download .csv**
 
 ![](Images/builddevaws1.png)  
 
 Next step is to create the credentials file. You can do this after installing the extensions.
 
+
+</p>
+<p style='margin-bottom:1em; margin-right:1em; text-align:right; font-family:Georgia'> 
+</p></span>
 </div>
 
 </details>
