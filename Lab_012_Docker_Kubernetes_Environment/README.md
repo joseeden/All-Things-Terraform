@@ -5,7 +5,7 @@
 
 This is an iteration of "Lab 01-Build a DEV Environment with Terraform and AWS" but this particular lab is to provision a resource for doing Docker and Kubernetes labs.
 
-This is not a intended to explain the different configuration files. You can check out the "Lab 01" to do a deep dive.
+This is not a intended to explain the different configuration files. You can check out the "Lab 001" to do a deep dive.
 
 Before we start, here are the tools that I am using for this lab.
 - Windows machine/laptop
@@ -99,7 +99,7 @@ $ git clone https://github.com/joseeden/101-Terraform-Projects.git
 Go to Lab 12.
 
 ```bash
-$ cd lab12_Docker_Kubernetes_Env
+$ cd Lab_012_Docker_Kubernetes_Env
 ```
 
 Initialize this directory.
@@ -228,7 +228,7 @@ $ sudo docker run -it --rm --name nyancat 06kellyjac/nyancat
 
 ### Oh, Another thing - Remote Development
 
-This automation also sets up your VSCode for remote development. Download the [Remote-SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack). There shold be an additional icon for Remote-SSH in the left panel of VSCode. 
+This automation also sets up your VSCode for remote development. Download the [Remote-SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack). There should be an additional icon for Remote-SSH in the left panel of VSCode. 
 
 Once you click it, you should see the IP of your instance there. Right-click, then "Connect to Host in New Window"
 

@@ -5,3 +5,4 @@
 *.tfstate
 .terraform.lock.hcl
 linux_386
+linux_amd64
