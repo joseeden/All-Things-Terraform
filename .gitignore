@@ -4,3 +4,4 @@
 *.tfstate.*
 *.tfstate
 .terraform.lock.hcl
+linux_386
