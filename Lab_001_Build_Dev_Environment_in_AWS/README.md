@@ -1,7 +1,6 @@
 
 ## Lab 01: Build a Dev Environment with Terraform and AWS
 
-<<<<<<< HEAD
 - [Introduction](#introduction)
 - [Authentication](#authentication)
 - [Setup Local Environment](#setup-local-environment)
@@ -28,8 +27,6 @@
 - [References:](#references)
 
 
-=======
->>>>>>> efda3938f3019d6c344ed6cdd620d5830148edb2
 ### Introduction
 
 > *This lab is based on Derek Morgan's course, ["Build a Dev Environment with Terraform and AWS"](https://github.com/morethancertified/rfp-terraform)*
@@ -46,10 +43,7 @@ In this lab, we'll build the following resources in AWS
 ![](../Images/dmbuildaws.png)  
 
 Below is the environment I am using for this lab. 
-<<<<<<< HEAD
 
-=======
->>>>>>> efda3938f3019d6c344ed6cdd620d5830148edb2
 - Windows machine/laptop
 - Visual Studio Code v1.67.2 (VSCode)
 - WSL on Visual Studio Code
