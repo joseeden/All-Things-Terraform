@@ -1,6 +1,32 @@
 
 ## Lab 01: Build a Dev Environment with Terraform and AWS
 
+- [Introduction](#introduction)
+- [Authentication](#authentication)
+- [Setup Local Environment](#setup-local-environment)
+- [Install Terraform](#install-terraform)
+- [Configure AWS Provider](#configure-aws-provider)
+- [Provision a VPC](#provision-a-vpc)
+- [Terraform State](#terraform-state)
+- [Terraform Destroy](#terraform-destroy)
+- [Deploy a Public Subnet](#deploy-a-public-subnet)
+- [Deploy an Internet Gateway](#deploy-an-internet-gateway)
+- [Terraform Format](#terraform-format)
+- [Create the Route table](#create-the-route-table)
+- [Create the Route Table Association](#create-the-route-table-association)
+- [Create the Security Group](#create-the-security-group)
+- [Get the AMI Datasource](#get-the-ami-datasource)
+- [Create a Keypair](#create-a-keypair)
+- [Deploy the EC2 Instance](#deploy-the-ec2-instance)
+- [Bootstrap EC2 with Userdata](#bootstrap-ec2-with-userdata)
+- [Create SSH Config Scripts - Templatefile](#create-ssh-config-scripts---templatefile)
+- [Configure VSCode with Provisioner](#configure-vscode-with-provisioner)
+- [Variables and their precedence](#variables-and-their-precedence)
+- [Outputs](#outputs)
+- [Cleanup](#cleanup)
+- [References:](#references)
+
+
 ### Introduction
 
 > *This lab is based on Derek Morgan's course, ["Build a Dev Environment with Terraform and AWS"](https://github.com/morethancertified/rfp-terraform)*
@@ -17,6 +43,7 @@ In this lab, we'll build the following resources in AWS
 ![](../Images/dmbuildaws.png)  
 
 Below is the environment I am using for this lab. 
+
 - Windows machine/laptop
 - Visual Studio Code v1.67.2 (VSCode)
 - WSL on Visual Studio Code
