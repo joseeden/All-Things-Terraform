@@ -1,10 +1,8 @@
 
-## Lab 01: Build a Dev Environment with Terraform and AWS
+# Lab 001: Build a Dev Environment with Terraform and AWS
 
 - [Introduction](#introduction)
-- [Authentication](#authentication)
-- [Setup Local Environment](#setup-local-environment)
-- [Install Terraform](#install-terraform)
+- [Pre-requisites](#pre-requisites)
 - [Configure AWS Provider](#configure-aws-provider)
 - [Provision a VPC](#provision-a-vpc)
 - [Terraform State](#terraform-state)
@@ -24,73 +22,50 @@
 - [Variables and their precedence](#variables-and-their-precedence)
 - [Outputs](#outputs)
 - [Cleanup](#cleanup)
-- [References:](#references)
+- [Resources](#resources)
 
+----------------------------------------------
 
-### Introduction
-
-> *This lab is based on Derek Morgan's course, ["Build a Dev Environment with Terraform and AWS"](https://github.com/morethancertified/rfp-terraform)*
+## Introduction 
 
 In this lab, we'll build the following resources in AWS
 
 - VPC
-- route table
-- Internet gateway
-- public subnet
-- security group
-- an EC2 instance
+- Route Table
+- Internet Gateway
+- Public Subnet
+- Security Group
+- EC2 Instance
 
-![](../Images/dmbuildaws.png)  
+Diagram:
 
-Below is the environment I am using for this lab. 
+![](../Images/all-things-terraform-lab-001-build-dev-env-with-aws.png)  
+
+Local environment used for this lab. 
 
 - Windows machine/laptop
 - Visual Studio Code v1.67.2 (VSCode)
 - WSL on Visual Studio Code
 - Amazon Web Services (AWS) resources
 
-----------------------------------------------
+## Pre-requisites 
 
-### Authentication
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
+              
 
-Before we start with building the code, we have to ensure that we'll be able to authenticate using API keys. 
+## Configure AWS Provider
 
-Follow these steps to [create the API keys and the credentials file locally.](../README.md#pre-requisites)                         
+From the [Hashicorp's documentation:](https://registry.terraform.io/providers/hashicorp/aws/latest/docs):
 
-----------------------------------------------
+<small> Use the Amazon Web Services (AWS) provider to interact with the many resources supported by AWS. You must configure the provider with the proper credentials before you can use it. </small>
 
-### Setup Local Environment
-
-For this one, I'm using VS Code. We'll set it up with the following extensions:
-
-- AWS Toolkit Extension
-- Terraform Extension
-
-Follow these steps to [setup your Visual Studio Code.](../README.md#pre-requisites)  
- 
-----------------------------------------------
-
-### Install Terraform
-
-To use Terraform, it needs to be installed on our local machine.
-
-Follow these steps to [install Terraform.](../README.md#pre-requisites)
-
-----------------------------------------------
-
-### Configure AWS Provider
-
-From the [Hashicorp's documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs):
-
-> Use the Amazon Web Services (AWS) provider to interact with the many resources supported by AWS. You must configure the provider with the proper credentials before you can use it.
-
-Since we already created the credentials file, we can proceed to creating the provider file. 
-
-Note that it is recommended to use variableS for configuration files instead of hardcoding any credentials. Another option is to specify the credentials file path.
+It is recommended to use variables for configuration files instead of hardcoding any credentials. Another option is to specify the credentials file path.
 
 ```bash
-$ cat > provider.tf
-
+### provider.tf
 terraform {
   required_providers {
     aws = {
@@ -100,7 +75,6 @@ terraform {
   }
 }
 
-# Configure the AWS Provider
 provider "aws" {
   region                   = "ap-southeast-1"
   shared_credentials_file  = "/mnt/c/Users/Eden.Jose/.aws/credentials"
@@ -113,9 +87,7 @@ Initialize.
 $ terraform  init
 ```
 
-----------------------------------------------
-
-### Provision a VPC
+## Provision a VPC
 
 From the Hashicorp documentation, we could see various AWS resources can be deployed. For this step, we'll be using [aws_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) to provide a VPC resource.
 
@@ -200,7 +172,7 @@ To run the command above without the interactive prompt,
 $ terraform apply -auto-approve
 ```
 
-When the command is finished running, it should return the followin message:
+When the command is finished running, it should return the following message:
 
 ```bash
 Plan: 1 to add, 0 to change, 0 to destroy.
@@ -211,7 +183,7 @@ aws_vpc.tf-vpc: Creation complete after 15s [id=vpc-00203af585d54c4f0]
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-On the Explorer tab on the left in VSCode, you should still see the available resources for Asia Pacific region when you click the AWS icon on the left panel. Sctoll at the bottom and then click,
+On the Explorer tab on the left in VSCode, you should still see the available resources for Asia Pacific region when you click the AWS icon on the left panel. Scroll at the bottom and then click,
 
 ```bash
 Resources --> Enable resources types... -->  AWS::EC2::VPC --> OK
@@ -244,9 +216,7 @@ When you click the VPC ID, it should open the configuration file.
 } 
 ```
 
-----------------------------------------------
-
-### Terraform State
+## Terraform State
 
 From the Hashicorp documentation page on [terraform state](https://www.terraform.io/language/state) :
 
@@ -276,7 +246,7 @@ $ terraform show
 
 ----------------------------------------------
 
-### Terraform Destroy
+## Terraform Destroy
 
 From Hashicorp documentation page on [terraform destroy](https://www.terraform.io/cli/commands/destroy):
 
@@ -296,7 +266,7 @@ $ terraform destroy -auto-approve
 
 ----------------------------------------------
 
-### Deploy a Public Subnet
+## Deploy a Public Subnet
 
 From Hashicorp documentation page on [AWS VPC Subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet):
 
@@ -361,7 +331,7 @@ Similarly, you can also check them on the AWS console.
 
 ----------------------------------------------
 
-### Deploy an Internet Gateway
+## Deploy an Internet Gateway
 
 To allow internet access to our VPC, we would need to provision an internet gateway. You can read more on the [Hashicorp documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway).
 
@@ -436,7 +406,7 @@ aws_vpc.tf-vpc
 
 ----------------------------------------------
 
-### Terraform Format
+## Terraform Format
 
 This is a neat feature which will correct any formatting errors that you may have on your template files.
 
@@ -446,7 +416,7 @@ $ terraform fmt
 
 ----------------------------------------------
 
-### Create the Route table
+## Create the Route table
 
 After you've provisioned an internet gateway, you need to create a route table to route traffic from the public subnet to the internet gateway.
 
@@ -546,7 +516,7 @@ $ terraform state list
 
 ----------------------------------------------
 
-### Create the Route Table Association
+## Create the Route Table Association
 
 From the Hashicorp documentation on [route table association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association):
 
@@ -644,7 +614,7 @@ Check on the console.
 
 ----------------------------------------------
 
-### Create the Security Group
+## Create the Security Group
 
 From the Hashicorp documentation on [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group):
 
@@ -769,7 +739,7 @@ Check on the AWS console.
 
 ----------------------------------------------
 
-### Get the AMI Datasource
+## Get the AMI Datasource
 
 From the Hashicorp documentation on [Data Source-aws_ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami):
 
@@ -821,7 +791,7 @@ $ terraform apply -auto-approve
 
 ----------------------------------------------
 
-### Create a Keypair
+## Create a Keypair
 
 For this step, we'll create a keypair that we'll be use by the EC2 instance to be created.
 
@@ -963,7 +933,7 @@ aws_vpc.tf-vpc
 
 ----------------------------------------------
 
-### Deploy the EC2 Instance
+## Deploy the EC2 Instance
 
 From the Hashicorp documentation on [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance):
 
@@ -1082,7 +1052,7 @@ For this step, we'll just review. We'll pass the userdata next and then we apply
 
 ----------------------------------------------
 
-### Bootstrap EC2 with Userdata
+## Bootstrap EC2 with Userdata
 
 We'll install the Docker engine on the EC2 instance using the userdata. To start with, let's first create the userdata script.
 
@@ -1273,7 +1243,7 @@ Docker version 20.10.16, build aa7e414
 
 ----------------------------------------------
 
-### Create SSH Config Scripts - Templatefile
+## Create SSH Config Scripts - Templatefile
 
 Search the **Remote-SSH** extensions in your VSCode.
 
@@ -1305,7 +1275,7 @@ EOF
 
 ----------------------------------------------
 
-### Configure VSCode with Provisioner
+## Configure VSCode with Provisioner
 
 From the Hashicorp documentation on [Provisioners](https://www.terraform.io/language/resources/provisioners/syntax):
 
@@ -1517,7 +1487,7 @@ Click the **Open Folder** on the left panel. Select the home directory and then 
 
 ----------------------------------------------
 
-### Variables and their precedence
+## Variables and their precedence
 
 From the Hashicorp documentation on [Variable Definition Precedence:](https://www.terraform.io/language/values/variables)
 
@@ -1615,7 +1585,7 @@ $ terraform console -var="host_os=unix"
 
 ----------------------------------------------
 
-### Outputs
+## Outputs
 
 From the Hashicorp documentation on [outputs](https://www.terraform.io/language/values/outputs):
 
@@ -1646,7 +1616,7 @@ tf-node-1-ip = "13.229.78.225"
 ```
 ----------------------------------------------
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
@@ -1655,6 +1625,7 @@ $ terraform destroy -auto-approve
 ```
 ----------------------------------------------
 
-### References:
+## Resources
 
+- [Build a Dev Environment with Terraform and AWS](https://github.com/morethancertified/rfp-terraform)
 - [Github - morethancertified/rfp-terraform](https://github.com/morethancertified/rfp-terraform)
