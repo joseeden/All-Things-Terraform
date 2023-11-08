@@ -1,40 +1,53 @@
 
-## Lab 03: VPC with EC2 instance
+# Lab 005: VPC with EC2 instance and NGINX
 
-> This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
 
-Before we begin, make sure you've setup the following pre-requisites
+- [Introduction](#introduction)
+- [Pre-requisites](#pre-requisites)
+- [Create the Provider file](#create-the-provider-file)
+- [Create the Main file](#create-the-main-file)
+- [Create the Variables files](#create-the-variables-files)
+- [Create the Outputs file](#create-the-outputs-file)
+- [Test it out](#test-it-out)
+- [Cleanup](#cleanup)
+- [Resources](#resources)
 
-  - [Setup Keys and Permissions](../README.md#pre-requisites)
-  - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
-  - [Configure the Credentials File](../README.md#pre-requisites) 
-  - [Install Terraform](../README.md#pre-requisites) 
+
+## Introduction 
 
 In this lab, we'll create the following:
 
-- a VPC spanning two availability zones
-- two public subnets
-- internet gateway and a single route table
-- a security group
-- a t3.micro instance with NGINX installed
+- A VPC spanning two availability zones
+- Two public subnets
+- Internet gateway and a single route table
+- A security group
+- A t3.micro instance with NGINX installed
+
+Diagram: 
 
 ![](../Images/lab3ex11.png)  
 
 
-Start with creating the project director.
+Local environment used for this lab. 
 
-```bash
-$ mkdir lab03_VPC_with_EC2_Nginx
-$ cd lab03_VPC_with_EC2_Nginx
-```
+- Windows machine/laptop
+- Visual Studio Code v1.67.2 (VSCode)
+- WSL on Visual Studio Code
+- Amazon Web Services (AWS) resources
 
-### Create the Provider file
+## Pre-requisites 
+
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
+
+## Create the Provider file
 
 Create the provider file.
 
-<details><summary> provider.tf </summary>
- 
 ```bash
+### provider.tf
  terraform {
   required_version = ">= 0.12"
 
@@ -54,17 +67,12 @@ provider "aws" {
 
 ```
  
-</details>
-
-### Create the Main file
+## Create the Main file
 
 Create the main file which will contain all the core configurations.
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab03_VPC_with_EC2_Nginx
-#--------------------------------------------------------------
+### main.tf
 # This terraform template deploys a VPC with 2 public subnets
 # that has a security group, an internet gateway, and a 
 # single route table. 
@@ -204,17 +212,14 @@ resource "aws_key_pair" "lab03-keypair" {
   public_key = file("~/.ssh/tf-keypair.pub")
 }
 ```
-</details>
 
-### Create the Variables files
+## Create the Variables files
 
 Notice that the main.tf has alot of **var.** statements. These reference the variables that are declared in the **variables.tf**. Note that you declare the variables in variables.tf, and you assign values to these variables through the **terraform.tfvars.**
 
-<details><summary> variables.tf </summary>
- 
 ```bash
+### variables.tf 
 # Variables for setting up terraform
-
 variable "aws_region" {
   description = "AWS region"
   type        = string
@@ -231,7 +236,6 @@ variable "my_profile" {
 }
 
 # Variables for creating the VPC and EC2 instances
-
 variable "instance_type" {
   type = string
 }
@@ -253,11 +257,8 @@ variable "amis" {
 }
 ```
  
-</details>
-
-<details><summary> terraform.tfvars </summary>
- 
 ```bash
+### terraform.tfvars
 # Variables for setting up terraform
 aws_region     = "ap-southeast-1"
 my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
@@ -268,18 +269,14 @@ avail_zones   = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
 instance_type = "t3.micro"
 ```
 
-</details>
-</br>
+We can assign values to the variables in the .tfvars file but we can also assign values through the commandline as environment variables.
 
-As we will see, we can assign values to the variables in the .tfvars file but we can also assign values throug the commandline as environment variables.
+## Create the Outputs file
 
-### Create the Outputs file
+Create the outputs file. These contains the values that will be returned after we run the Terraform template.
 
-Next, we'll create the outputs file. These contains the values that will be returned after we run the Terraform template.
-
-<details><summary> outputs.tf </summary>
- 
 ```bash
+### outputs.tf
 output "vpc_id" {
   value = aws_vpc.lab03-vpc.id
 }
@@ -296,11 +293,8 @@ output "server_public_ip" {
   value = aws_instance.lab03-node-1.public_ip
 }
 ```
- 
-</details>
 
-
-### Test it out
+## Test it out
 
 Before we proceed, let's get our IP from [whatsmyip.](https://whatismyipaddress.com/). After that, we can assign our IP to a variable which will be used during the execution.
 
@@ -344,7 +338,6 @@ public_subnet2_id = "subnet-036370db7375dbb57"
 server_public_ip = "46.137.236.20"
 vpc_id = "vpc-01ecb171bd04a12e8"
 ```
-
  
 Go to the AWS Console and check if the resources are created.
 
@@ -373,9 +366,8 @@ You can also copy the IP and open it in a browser. You should see the NGINX land
 
 ![](../Images/lab3awsnginxcreated.png)  
 
-----------------------------------------------
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
@@ -383,3 +375,6 @@ To delete all the resources, just run the **destroy** command.
 $ terraform destroy -auto-approve 
 ```
 
+## Resources 
+
+- [Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
