@@ -1,16 +1,20 @@
 
-## Lab 04: Advanced VPC with ALB and EC2 instances
+# Lab 006: Advanced VPC with ALB and EC2 instances
 
-> This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
+  - [Introduction](#introduction)
+  - [Pre-requisites](#pre-requisites)
+  - [Create the Provider file](#create-the-provider-file)
+  - [Create the datasources file](#create-the-datasources-file)
+  - [Create the Main file](#create-the-main-file)
+  - [cidrsubnet function](#cidrsubnet-function)
+  - [Launch template](#launch-template)
+  - [Validate](#validate)
+  - [Test it out](#test-it-out)
+  - [Cleanup](#cleanup)
+  - [Resources](#resources)
 
-Note that this lab builds on top of the previous lab on "VPC with EC2 instance"*
 
-Before we begin, make sure you've setup the following pre-requisites
-
-  - [Setup Keys and Permissions](../README.md#pre-requisites)
-  - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
-  - [Configure the Credentials File](../README.md#pre-requisites) 
-  - [Install Terraform](../README.md#pre-requisites) 
+## Introduction
   
 In this lab, we'll create the following:
 
@@ -22,22 +26,24 @@ In this lab, we'll create the following:
 - an Application load BalAncer (ALB)
 - autoscaling group of t3.micro instances with NGINX installed
 
-![](../Images/lab4diagram.png)  
+Local environment used for this lab. 
 
-Start with creating the project directory.
+- Windows machine/laptop
+- Visual Studio Code v1.67.2 (VSCode)
+- WSL on Visual Studio Code
+- Amazon Web Services (AWS) resources
+
+## Pre-requisites 
+
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
+
+## Create the Provider file
 
 ```bash
-$ mkdir lab04_Advanced_VPC_ALB_EC2
-$ cd lab04_Advanced_VPC_ALB_EC2
-```
-
-----------------------------------------------
-
-### Create the Provider file
-
-<details><summary> provider.tf </summary>
- 
-```bash
+### provider.tf
 terraform {
   required_version = ">= 0.12"
 
@@ -55,17 +61,13 @@ provider "aws" {
   profile                  = var.my_profile
 }
 ```
- 
-</details>
 
-### Create the datasources file
+## Create the datasources file
 
 Here we'll define the AMI to be fetched and used for the launch template later.
 
-<details><summary> datasources.tf </summary>
- 
 ```bash
-
+### datasources.tf
 data "aws_ami" "lab04_ami" {
   most_recent = true
   owners      = ["099720109477"]
@@ -81,22 +83,18 @@ data "aws_ami" "lab04_ami" {
   }
 }
 ```
- 
-</details>
 
-### Create the Main file
+## Create the Main file
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab04_VPC_with_EC2_Nginx
-#---------------------------------------------------------------------
+### main.tf
+#-------------------------------------------
 # This terraform template deploys a VPC with 2 public subnets that has 
 # a security group, an internet gateway, a NAT gateway, and an 
 # Application loadbalancer. Traffic will be loadbalanced between the 
 # EC2 instances in the autoscaling group. Finally, the instances are 
 # bootstrapped with an NGINX webserver.
-#---------------------------------------------------------------------
+#-------------------------------------------
 
 resource "aws_vpc" "lab04-vpc" {
   cidr_block           = var.cidr_block
@@ -416,13 +414,10 @@ resource "aws_key_pair" "lab04-keypair" {
   public_key = file("~/.ssh/tf-keypair.pub")
 }
 ```
- 
-</details>
-</br>
 
 Notice here we're using **cidrblock** variable which is declared in **variables.tf** and assigned a value in **terraform.tfvars**. We also leveraged **cidrsubnet** function which calculates a subnet within a given IP network address prefix.
 
-### cidrsubnet function
+## cidrsubnet function
 
 ```bash
 cidrsubnet(prefix, newbits, netnum) 
@@ -454,11 +449,11 @@ $ terraform console
 "10.0.0.0/24"
 ```
 
-### Launch template
+## Launch template
 
 From the main.tf, we used a **aws_launch_template** instead of an **aws_instance** resource. Here we define the launch configurations for the instances that will be launched in the auto-scaling group. The template also utilize a **webserver.tpl** template which will bootstrap the EC2 instances with NGINX webserver.
 
-### Validate
+## Validate
 
 Initialize the working directory.
 
@@ -478,7 +473,7 @@ To validate if our configuration files are valid,
 $ terraform validate 
 ```
 
-### Test it out
+## Test it out
 
 Before we proceed, let's get our IP from [whatsmyip.](https://whatismyipaddress.com/). After that, we can assign our IP to a variable which will be used during the execution.
 
@@ -541,9 +536,8 @@ Check the resources if they are created through the AWS Console.
 ![](../Images/lab4albtargetscreated.png)  
 ![](../Images/lab4asgcreated.png)  
 
-----------------------------------------------
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
@@ -551,3 +545,6 @@ To delete all the resources, just run the **destroy** command.
 $ terraform destroy -auto-approve 
 ```
 
+## Resources 
+
+- [Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
