@@ -1,64 +1,57 @@
 
-# Lab 02: DEV Environment with SQS and Lambda
+# Lab 002: DEV Environment with SQS and Lambda
 
-### Introduction
 
-In this lab, our setup would look like this:
+- [Introduction](#introduction)
+- [Pre-requisites](#pre-requisites)
+- [Lambda function](#lambda-function)
+- [Create the Provider file](#create-the-provider-file)
+- [Create the Variables file](#create-the-variables-file)
+- [Create the main.tf file and run](#create-the-maintf-file-and-run)
+- [Test the Lambda function](#test-the-lambda-function)
+- [Modify the Lambda Handler Name](#modify-the-lambda-handler-name)
+- [Create the SQS Queues](#create-the-sqs-queues)
+- [Attach SQS Permissions to the IAM Role for Lambda](#attach-sqs-permissions-to-the-iam-role-for-lambda)
+- [Link the SQS Queues and Lambda Function](#link-the-sqs-queues-and-lambda-function)
+- [Configure Logging to CloudWatch](#configure-logging-to-cloudwatch)
+- [Testing our Setup](#testing-our-setup)
+- [Cleanup](#cleanup)
+- [Resources](#resources)
+
+
+## Introduction
+
+In this lab:
 
 1. We have an SQS main queue that will feed messages to a Lambda function that's written in Python.
 2. The Lambda function will have 2 attemts to process the messages.
 3. After two failed attempts, the function will send the message to a secondary queue, which is called a **Dead Letter Queue**.
 
-----------------------------------------------
+Local environment used for this lab. 
 
-### Authentication
+- Windows machine/laptop
+- Visual Studio Code v1.67.2 (VSCode)
+- WSL on Visual Studio Code
+- Amazon Web Services (AWS) resources
+            
+## Pre-requisites 
 
-Before we start with building the code, we have to ensure that we'll be able to authenticate using API keys. 
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
 
-Follow these steps to [create the API keys and the credentials file locally.](../README.md#pre-requisites)                         
-
-----------------------------------------------
-
-### Setup Local Environment
-
-For this one, I'm using VS Code. We'll set it up with the following extensions:
-
-- AWS Toolkit Extension
-- Terraform Extension
-
-Follow these steps to [setup your Visual Studio Code.](../README.md#pre-requisites)  
- 
-----------------------------------------------
-
-### Configure the Credentials Files
-
-To be able to connect from your local machine to your AWS account, you will need to create a credentials file.
-
-Follow these steps to [configure the Credentials File](../README.md#pre-requisites)  
-
-----------------------------------------------
-
-### Install Terraform
-
-To use Terraform, it needs to be installed on our local machine.
-
-Follow these steps to [install Terraform.](../README.md#pre-requisites)
-
-----------------------------------------------
-
-### Lambda function
+## Lambda function
 
 Here is the Lambda function that we'll be using.
-
-<details><summary> main.py </summary>
  
 ```python
 
 # main.py
-#---------------------------------------------------------------------------
+#-----------------------------
 # Lambda function that processes data from an SQS queue.
 # After two failed attempts, functino sends message to a dead letter queue.
-#---------------------------------------------------------------------------
+#-----------------------------
 
 import json
 
@@ -72,33 +65,25 @@ def lambda_handler(event, context):
   }
 ```
 
-</details>
 
-
-----------------------------------------------
-
-### Create the Provider file
+## Create the Provider file
 
 From the [Hashicorp's documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs):
 
-> Use the Amazon Web Services (AWS) provider to interact with the many resources supported by AWS. You must configure the provider with the proper credentials before you can use it.
+<small> Use the Amazon Web Services (AWS) provider to interact with the many resources supported by AWS. You must configure the provider with the proper credentials before you can use it. </small>
 
 Let's start with creating the **provider.tf**
-
-
-<details><summary> provider.tf </summary>
  
 ```bash
- terraform {
+### provider.tf
+terraform {
   required_version = ">= 0.12"
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.16.0"
     }
   }
-
 }
 
 provider "aws" {
@@ -107,19 +92,13 @@ provider "aws" {
   profile                  = var.my_profile
 }
 ```
-</details>
 
-
-----------------------------------------------
-
-### Create the Variables file
+## Create the Variables file
 
 The variables file will contain all the variables that you'll use on your main template file.
 
-
-<details><summary> variables.tf </summary>
- 
 ```bash
+### variables.tf 
 variable "aws_region" {
   description = "AWS region"
   type        = string
@@ -141,29 +120,28 @@ variable "my_profile" {
 </details>
 <br>
 
-Note that there's also a precedence of the variables. We can use the **variables.tf** if there are no **tfvars** file that exists. We'll create a default **terraform.tfvars** file.
+Note that there's also a precedence of the variables. 
 
-<details><summary> terraform.tfvars </summary>
+- **.tfvars** files are used first
+- If there are no **tfvars** file, the **variables.tf** is used 
+ that exists. 
  
+Create a default **terraform.tfvars** file.
+
 ```bash
+### terraform.tfvars
 aws_region     = "ap-southeast-1"
 my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
 my_profile     = "vscode-dev" 
 ```
-</details>
 
-----------------------------------------------
-
-### Create the main.tf file and run
+## Create the main.tf file and run
 
 After we've configured the variables and provider file, the next step is to create the **main.tf** which will contain all the resources we'll provision.
 
-<details><summary> main.tf </summary>
  
 ```bash
-# lab02_dev_sqs_lambda
-#------------------------------------------------------
-
+### main.tf 
 # Creates a zip file of the main.py function
 data "archive_file" "tfzip" {
   type        = "zip"
@@ -202,32 +180,29 @@ resource "aws_iam_role" "lambda_python_test_iam_role" {
 EOF
 }
 ```
- 
-</details>
-</br>
 
-Then, initialize the working directory. For this lab, I've created a directory named **lab02_dev_sqs-lambda** which will contain all the files.
+Then, initialize the working directory. 
 
 ```bash
-$ terraform init 
+terraform init 
 ```
 
 Review.
 
 ```bash
-$ terraform plan 
+terraform plan 
 ```
 
 If the command above didn't return any error, you can now run it. This will prompt you to confirm the changes you want to make.
 
 ```bash
-$ terraform apply 
+terraform apply 
 ```
 
 You can also set it to automatically approve the changes by running the command below.
 
 ```bash
-$ terraform apply -auto-approve 
+terraform apply -auto-approve 
 ```
 
 It should return this message if there's no error.
@@ -278,9 +253,9 @@ Similarly, you can also check on the AWS Console and go to Lambda. Click the fun
 ![](../Images/lab2awslambda2.png)  
 
 
-----------------------------------------------
 
-### Test the Lambda function
+
+## Test the Lambda function
 
 Scroll down to the **Code** section at the bottom and double-click **main.py** to see the code. It's time to test it.
 
@@ -299,18 +274,14 @@ Back in the **Code source** section, click **Test**. You'll see that it returns 
 ![](../Images/lab2awslambdatest1errror.png)  
 
 
-----------------------------------------------
 
-### Modify the Lambda Handler Name
+
+## Modify the Lambda Handler Name
 
 To solve the error, we can edit the main.tf and change the **handler** value under the **aws_lambda_function** resource to "main.lambda_handler".
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab02_dev_sqs_lambda
-#------------------------------------------------------
-
+### main.py
 # Creates a zip file of the main.py function
 data "archive_file" "tfzip" {
   type        = "zip"
@@ -350,16 +321,14 @@ EOF
 }
 ```
  
-</details>
-</br>
 
 Review. If it doesn't return any error message, apply.
 
 ```bash
-$ terraform plan  
+terraform plan  
 ```
 ```bash
-$ terraform apply -auto-approve
+terraform apply -auto-approve
 ```
 
 Going back to the AWS Console, refresh the page and scroll down to the **Runtime settings** section. You should now see the new Handler name.
@@ -371,24 +340,18 @@ On the **Code source** section, hit test again. A StatusCode of 200, along with 
 ![](../Images/lab2awslambdasuccess.png)  
 
 
-----------------------------------------------
-
-### Create the SQS Queues
+## Create the SQS Queues
 
 Recall that we'll be creating two SQS queues:
+
 - main queue
 - dead letter queue
 
 Edit the main.tf to include the resource **aws_sqs_queue**.
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab02_dev_sqs_lambda
-#------------------------------------------------------
-
+### main.tf 
 # Creates a zip file of the main.py function
-
 data "archive_file" "tfzip" {
   type        = "zip"
   source_file = "main.py"
@@ -445,35 +408,34 @@ resource "aws_sqs_queue" "lab2-dlq-queue" {
 }
 ```
  
-</details>
-</br>
-
 Review. If it doesn't return any error message, apply.
 
 ```bash
-$ terraform plan  
+terraform plan  
 ```
 ```bash
-$ terraform apply -auto-approve
+terraform apply -auto-approve
 ```
 
 Verify if the two SQS queues are created through the AWS Console by going to the SQS menu.
 
 ![](../Images/lab2sqs1.png)  
 
-----------------------------------------------
 
-### Attach SQS Permissions to the IAM Role for Lambda
+
+## Attach SQS Permissions to the IAM Role for Lambda
 
 So far, we've created the execution role for Lambda. However, this role doesn't have the necessary permissions for SQS, namely:
+
 - sqs:ReceiveMessage
 - sqs:DeleteMessage
 - sqs:GetQueueAttributes
 
 As such, we need to do the following steps:
-- create the policy document
-- create the actual IAM role policy from the policy document
-- attach the IAM role policy to the IAM role
+
+- Create the policy document
+- Create the actual IAM role policy from the policy document
+- Attach the IAM role policy to the IAM role
 
 You may read more about the policy and policy attachments in the link below:
 
@@ -483,14 +445,9 @@ You may read more about the policy and policy attachments in the link below:
 
 Modify the main.tf file.
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab02_dev_sqs_lambda
-#------------------------------------------------------
-
+### main.tf 
 # Creates a zip file of the main.py function
-
 data "archive_file" "tfzip" {
   type        = "zip"
   source_file = "main.py"
@@ -545,7 +502,6 @@ resource "aws_sqs_queue" "lab2-dlq-queue" {
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
 }
-
 
 # Create the policy document which will contain the actions for accessing the SQS main queue.
 data "aws_iam_policy_document" "sqs-policy-doc" {
@@ -575,35 +531,27 @@ resource "aws_iam_role_policy_attachment" "sqs-policy-attach" {
 }
 ```
  
-</details>
-</br>
-
 We'll just do a review for this step. We'll apply the changes once we've linked the SQS main queue and Lambda function.
 
 ```bash
-$ terraform plan 
+terraform plan 
 ```
 
-----------------------------------------------
-
-### Link the SQS Queues and Lambda Function
+## Link the SQS Queues and Lambda Function
 
 Now that we've create the SQS Queues and the Lambda function, and we've created and attached the necessary policies, the next step is establish the link between the two services. To do this, we will use the resource **aws_lambda_event_source_mapping**.
 
 From the Hashicorp documentation on [aws_lambda_event_source_mapping:](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_event_source_mapping)
 
-> This allows Lambda functions to get events from Kinesis, DynamoDB, SQS, Amazon MQ and Managed Streaming for Apache Kafka (MSK).
+<small>This allows Lambda functions to get events from Kinesis, DynamoDB, SQS, Amazon MQ and Managed Streaming for Apache Kafka (MSK).</small>
 
 Edit the main.tf to add the new resource.
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab02_dev_sqs_lambda
-#--------------------------------------------------------------
+### main.tf 
 # This terraform template deploys a main SQS queue which will 
 # trigger a Lambda function.
-#--------------------------------------------------------------
+#----------------
 
 # Creates a zip file of the main.py function.
 data "archive_file" "tfzip" {
@@ -698,14 +646,11 @@ resource "aws_lambda_event_source_mapping" "sqs-trigger" {
   function_name    = aws_lambda_function.lambda_python_test.arn
 }
 ```
- 
-</details>
-</br>
 
 Review. This time we'll add an **-out** parameter which will output the results of the **plan** to a file if it doesn't return an error.
 
 ```bash
-$ terraform plan -out lab2.tfplan
+terraform plan -out lab2.tfplan
 ```
 
 Note that the terraform plan file is in binary format and is intended to be read by Terraform and to be passed to **apply** or **destroy** commands as a way to verify that nothing has changed since you accepted the plan. You can read more about tfplan [here](https://www.terraform.io/cloud-docs/sentinel/import/tfplan).
@@ -713,7 +658,7 @@ Note that the terraform plan file is in binary format and is intended to be read
 To run the apply,
 
 ```bash
-$ terraform apply "lab2.tfplan" 
+terraform apply "lab2.tfplan" 
 ```
 
 Verify through the AWS Console if the triggers are created. Go to the Lambda menu, click the **lab2-main-queue** and click the **Lambda triggers** tab.
@@ -725,11 +670,11 @@ You could also the SQS  trigger in the Lambda page.
 
 ![](../Images/lab2lambdasqstriggeronlambdapage.png)  
 
-----------------------------------------------
 
-### Configure Logging to CloudWatch
+## Configure Logging to CloudWatch
 
 As part of our testing, we will need to enable logging to CloudWatch. 
+
 Lambda works by polling the queue for updates. When there is a new message, Lambda invokes the function **lambda_python_test** with this new event data from the queue. The function then runs and creates logs in Amazon CloudWatch.
 
 To enable logging, add this **statement** under the **aws_iam_policy_document**.
@@ -757,14 +702,11 @@ resource "aws_cloudwatch_log_group" "example" {
 
 The main.tf should now look like this.
 
-<details><summary> main.tf </summary>
- 
 ```bash
-# lab02_dev_sqs_lambda
-#--------------------------------------------------------------
+### main.tf 
 # This terraform template deploys a main SQS queue which will 
 # trigger a Lambda function.
-#--------------------------------------------------------------
+#----------------
 
 # Creates a zip file of the main.py function.
 data "archive_file" "tfzip" {
@@ -875,31 +817,27 @@ resource "aws_cloudwatch_log_group" "example" {
 }
 ```
  
-</details>
-</br>
-
 Run the command below to correct any wrong formatting.
 
 ```bash
-$ terraform fmt 
+terraform fmt 
 ```
 
 Review. If no errors are returned, apply.
 
 ```bash
-$ terraform review 
+terraform review 
 ```
 ```bash
-$ terraform apply -auto-approve 
+terraform apply -auto-approve 
 ```
 
 Verify through the AWS Console if the CloudWatch Log group is created. Click the log group to see the log group details and log streams. There's still no log streams here.
 
 ![](../Images/lab2awscloudwatchloggroup.png)  
 
-----------------------------------------------
 
-### Testing our Setup 
+## Testing our Setup 
 
 It's time to test what we've built so far. Go to the SQS page and open the **lab2-main-queue**. Click the **Send and receive messages** button at the upper right.
 
@@ -923,18 +861,16 @@ If you see the messages you send to the SQS main queue, CONGRATS! 😀
 
 ![](../Images/lab2stream2.png)  
 
-----------------------------------------------
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
 ```bash
-$ terraform destroy -auto-approve 
+terraform destroy -auto-approve 
 ```
-----------------------------------------------
 
-### References:
+## Resources
 
 - [Write AWS Lambda Logs to CloudWatch Log Group with Terraform](https://stackoverflow.com/questions/59949808/write-aws-lambda-logs-to-cloudwatch-log-group-with-terraform)
 - [How to configure AWS Lambda CloudWatch logging with Terraform](https://technotrampoline.com/articles/how-to-configure-aws-lambda-cloudwatch-logging-with-terraform/)
