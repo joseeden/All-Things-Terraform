@@ -1,5 +1,5 @@
 
-# Lab 001: Build a Dev Environment with Terraform and AWS
+# Lab 001: Dev Environment with Terraform and AWS
 
 - [Introduction](#introduction)
 - [Pre-requisites](#pre-requisites)
