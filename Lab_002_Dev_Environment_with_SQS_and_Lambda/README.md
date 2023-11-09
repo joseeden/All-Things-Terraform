@@ -24,7 +24,7 @@
 In this lab:
 
 1. We have an SQS main queue that will feed messages to a Lambda function that's written in Python.
-2. The Lambda function will have 2 attemts to process the messages.
+2. The Lambda function will have 2 attempts to process the messages.
 3. After two failed attempts, the function will send the message to a secondary queue, which is called a **Dead Letter Queue**.
 
 Local environment used for this lab. 

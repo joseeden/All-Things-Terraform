@@ -1,46 +1,55 @@
 
-## Lab 08: Deploy DynamoDB and Solve Implicit Dependencies 
+# Lab 015: Deploy DynamoDB and Solve Implicit Dependencies 
 
-> *This lab is based on [Cloud Academy's Learning Path on "The Infrastructure Developer's Guide to Terraform: AWS Edition".](https://cloudacademy.com/learning-paths/terraform-on-aws-1-2377/)*
 
-Before we begin, make sure you've setup the following pre-requisites
+- [Introduction](#introduction)
+- [Pre-requisites](#pre-requisites)
+- [Config files](#config-files)
+- [Create the Provider file](#create-the-provider-file)
+- [Create the Variable files](#create-the-variable-files)
+- [Create the Main file](#create-the-main-file)
+- [Time to Apply!](#time-to-apply)
+- [Understanding the Error](#understanding-the-error)
+- [Visualize the Config file](#visualize-the-config-file)
+- [Now that we know what the error means](#now-that-we-know-what-the-error-means)
+- [Cleanup](#cleanup)
+- [Resources](#resources)
 
-  - [Setup Keys and Permissions](../README.md#pre-requisites)
-  - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
-  - [Configure the Credentials File](../README.md#pre-requisites) 
-  - [Install Terraform](../README.md#pre-requisites) 
 
-### Introduction
+## Introduction
 
 In this lab, we'll be doing the following:
 
-- deploying a DynamoDB database
-- understand Terraform's behavior when deploying resources in order
-- intentionally cause a dependency issue
-- visualize a Terraform configuration file
-- resolve the dependency issue
+- Deploy a DynamoDB database
+- Understand Terraform's behavior when deploying resources in order
+- Intentionally cause a dependency issue
+- Visualize a Terraform configuration file
+- Resolve the dependency issue
 
-Start with creating the project directory.
+## Pre-requisites 
+
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
+
+## Config files 
+
+Create the core configuration files which we will populate in the succeeding steps.
 
 ```bash
-$ mkdir lab07_Install_Terraform_on_Windows_Server
-$ cd lab07_Install_Terraform_on_Windows_Server
+touch main.tf 
+touch provider.tf
+touch vars.tf
+touch terraform.tfvars
 ```
 
-We'll also create the core configuration files which we will populate in the succeeding steps.
-
-```bash
-$ touch main.tf 
-$ touch provider.tf
-$ touch vars.tf
-$ touch terraform.tfvars
-```
-
-### Create the Provider file
+## Create the Provider file
 
 <details><summary> provider.tf </summary>
  
 ```bash
+### provider.tf
 terraform {
   required_version = ">= 0.12"
 
@@ -61,11 +70,12 @@ provider "aws" {
  
 </details>
 
-### Create the Variable files 
+## Create the Variable files 
 
 <details><summary> vars.tf </summary>
  
 ```bash
+### vars.tf
 # Variables for setting up terraform
 
 variable "aws_region" {
@@ -89,6 +99,7 @@ variable "my_profile" {
 <details><summary> terraform.tfvars </summary>
  
 ```bash
+### terraform.tfvars
 # Variables for setting up terraform
 aws_region     = "ap-southeast-1"
 my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
@@ -97,12 +108,12 @@ my_profile     = "vscode-dev"
  
 </details>
 
-### Create the Main file 
+## Create the Main file 
 
 <details><summary> main.tf </summary>
  
 ```bash
-# lab08 - Deploy a DynamoDB and a table item.
+### main.tf
 #----------------------------------------------------
 
 resource "aws_dynamodb_table_item" "lab08-ddb-table-item" {
@@ -135,31 +146,31 @@ resource "aws_dynamodb_table" "lab08-ddb-table" {
  
 </details>
 
-### Time to Apply!
+## Time to Apply!
 
 But first, initialize the working directory.
 
 ```bash
-$ terraform init 
+terraform init 
 ```
 
 Verify if the config files are correctly formatted and syntactically valid.
 
 ```bash
-$ terraform fmt 
-$ terraform validate 
+terraform fmt 
+terraform validate 
 ```
 
 Next, do a dry-run of the changes before actually applying them.
 
 ```bash
-$ terraform plan  
+terraform plan  
 ```
 
 If it doesn't return an error, run the changes.
 
 ```bash
-$ terraform apply -auto-approve 
+terraform apply -auto-approve 
 ```
 
 Notice that when we try to provision the resources, it now returns a **ResourceNotFoundException** error message.
@@ -172,7 +183,7 @@ Notice that when we try to provision the resources, it now returns a **ResourceN
 │    4: resource "aws_dynamodb_table_item" "lab08-ddb-table-item" { 
 ```
 
-### Understanding the Error
+## Understanding the Error
 
 Doing a quick Google search, we found what's causing the [ResourceNotFoundException error:](https://stackoverflow.com/questions/40192304/aws-dynamodb-resource-not-found-exception)
 
@@ -191,12 +202,12 @@ This error actually means that the client cannot reach a table in your database.
 database environments (e.g. Testcontainers Dynalite) don't have an incorrect value for the region. And any nonempty region value will be correct 
 ```
 
-### Visualize the Config file
+## Visualize the Config file
 
 To troubleshoot the issue, we can use the **terraform graph** command to visualize the configuration file. It will return a DOT-formatted "digraph" output which we can run through an online Graphviz tool. Copy the output.
 
 ```bash
-$ terraform graph
+terraform graph
 ```
 ```bash
 digraph {
@@ -227,7 +238,7 @@ Open [WebGraphviz](http://www.webgraphviz.com/) in your web browser, paste the c
 
 This is what's causing the error because the table has to exist first before the table item can be created. 
 
-### Now that we know what the error means
+## Now that we know what the error means
 
 Time to resolve the dependency issue. Under the **aws_dynamodb_table_item** resource block, we can see that it reference **table_name** and **hash_key** from the **aws_dynamodb_table** resource block.
 
@@ -280,7 +291,7 @@ resource "aws_dynamodb_table" "lab08-ddb-table" {
 Apply the changes again. It should now succeed.
 
 ```bash
-$ terraform apply -auto-approve 
+terraform apply -auto-approve 
 ```
 ```bash
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed. 
@@ -289,7 +300,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 Let's run the **graph** command again and use the output in the online [WebGraphviz](http://www.webgraphviz.com/)
 
 ```bash
-$ terraform graph
+terraform graph
 
 digraph {
         compound = "true"
@@ -323,10 +334,14 @@ The new graph should now display the flowchart which shows that implicit depende
 ![](../Images/lab8configwrong.png)![](../Images/lab8configright.png)  
 
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
 ```bash
-$ terraform destroy -auto-approve 
+terraform destroy -auto-approve 
 ```
+
+## Resources 
+
+- [The Infrastructure Developer's Guide to Terraform: AWS Edition](https://cloudacademy.com/learning-paths/terraform-on-aws-1-2377/)

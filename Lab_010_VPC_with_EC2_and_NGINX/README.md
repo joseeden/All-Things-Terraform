@@ -1,5 +1,5 @@
 
-# Lab 005: VPC with EC2 instance and NGINX
+# Lab 010: VPC with EC2 instance and NGINX
 
 
 - [Introduction](#introduction)

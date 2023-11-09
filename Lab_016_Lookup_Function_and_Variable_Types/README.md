@@ -1,22 +1,25 @@
 
-## Lab 09: Lookup Function and Different Types of Variables
+# Lab 016: Lookup Function and Different Types of Variables
 
-> This lab is based on [Cloud Academy's Learning Path on The Infrastructure Developer's Guide to Terraform: AWS Edition.](https://cloudacademy.com/learning-paths/terraform-on-aws-1-2377/)
+- [Introduction](#introduction)
+- [Pre-requisites](#pre-requisites)
+- [Core Config files](#core-config-files)
+- [Create the Provider file](#create-the-provider-file)
+- [Create the Main file](#create-the-main-file)
+- [Create the variable files](#create-the-variable-files)
+- [Time to Apply!](#time-to-apply)
+- [Cleanup](#cleanup)
+- [Resources](#resources)
 
-Before we begin, make sure you've setup the following pre-requisites
 
-  - [Setup Keys and Permissions](../README.md#pre-requisites)
-  - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
-  - [Configure the Credentials File](../README.md#pre-requisites) 
-  - [Install Terraform](../README.md#pre-requisites) 
 
-### Introduction
+## Introduction
 
 In this lab, we'll do the following:
 
-- deploying a VPC and an EC2 instance
-- looking into "lookup" functions
-- understanding different type of variables
+- Deploy a VPC and an EC2 instance
+- Look into "lookup" functions
+- Understand different type of variables
 
 This is a fairly simple lab and is an iteration of the first few labs, but here we'll checkout how to use the **lookup** function and see what sort of variables can we define in the **vars.tf** file. 
 
@@ -24,14 +27,18 @@ This is a fairly simple lab and is an iteration of the first few labs, but here 
 <img src="../Images/lab9diagram.png">
 </p>
 
-Start with creating the project directory.
 
-```bash
-$ mkdir lab09_Lookup_and_Types_of_Vars
-$ cd lab09_Lookup_and_Types_of_Vars
-```
+## Pre-requisites 
 
-We'll also create the core configuration files which we will populate in the succeeding steps.
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
+
+
+## Core Config files 
+
+Initially create the core configuration files which we will populate in the succeeding steps.
 
 ```bash
 $ touch main.tf 
@@ -40,7 +47,7 @@ $ touch vars.tf
 $ touch terraform.tfvars
 ```
 
-### Create the Provider file
+## Create the Provider file
 
 <details><summary> provider.tf </summary>
 
@@ -66,7 +73,7 @@ provider "aws" {
 
 </details>
 
-### Create the Main file
+## Create the Main file
 
 We can see that the main.tf file is populated with a lot of variables which we'll declare in the variables files. One important thing to notice here is the use of **lookup** function.
 
@@ -75,7 +82,7 @@ The **ami** field is basically looking through the values inside the map-type **
 <details><summary> main.tf </summary>
  
 ```bash
-# lab09-Lookup Function and Different Types of Variables
+### main.tf 
 #--------------------------------------------------------
 
 resource "aws_vpc" "lab09-vpc" {
@@ -111,7 +118,7 @@ resource "aws_instance" "server" {
  
 </details>
 
-### Create the variable files
+## Create the variable files
 
 Here we can see that the vars.tf file declares alot of variables. The first three is what we'll use to connect from our local machine to our AWS account
 
@@ -231,7 +238,7 @@ ami_ids = {
 
 </details>
 
-### Time to Apply!
+## Time to Apply!
 
 Initialize the working directory.
 
@@ -274,10 +281,14 @@ Verify in the AWS Console if the resources are provisioned.
 ![](../Images/lab9ec2created.png)  
 
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
 ```bash
 $ terraform destroy -auto-approve 
 ```
+
+## Resources
+
+- [The Infrastructure Developer's Guide to Terraform: AWS Edition.](https://cloudacademy.com/learning-paths/terraform-on-aws-1-2377/)

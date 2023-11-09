@@ -1,9 +1,23 @@
 
-## Lab 05: Advanced VPC with ALB and EC2 instances - Simplified
+# Lab 012: Advanced VPC with ALB and EC2 instances - Simplified
 
-> This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
+- [Introduction](#introduction)
+- [Terraform files](#terraform-files)
+- [Verify](#verify)
+- [Cleanup](#cleanup)
+- [Resources](#resources)
+
+
+## Introduction
 
 This is a continuation of the previous lab on **Advanced VPC with ALB and EC2 instances.** In this lab, we'll be simplifying the configuration by using "count meta" argument.
+
+As a references, here's the diagram that we'll use.
+
+![](../Images/lab5diagram2.png)  
+
+
+## Terraform files 
 
 We'll still use the same set of files.
 
@@ -90,17 +104,14 @@ cidr_block    = "10.0.0.0/16"
 ```
 
 </details>
-
-As a references, here's the diagram that we'll use.
-
-![](../Images/lab5diagram2.png)  
+<br>
 
 Here's the modified main file.
 
 <details><summary> main.tf </summary>
  
 ```bash
-# lab04_VPC_with_EC2_Nginx
+### main.tf 
 #---------------------------------------------------------------------
 # This terraform template deploys a VPC with 2 public subnets that has 
 # a security group, an internet gateway, a NAT gateway, and an 
@@ -487,12 +498,9 @@ public_subnet_id = [
 vpc_id = "vpc-03d74d1e4c0e55081"
 ```
 
-----------------------------------------------
+## Verify
 
-### Verify
-
-Check in the AWS console if the resources are created.
-You may also copy the **alb_dns_name** link that's returned when you run the **apply** command and open it in your browser.
+Check in the AWS console if the resources are created. You may also copy the **alb_dns_name** link that's returned when you run the **apply** command and open it in your browser.
 
 ```bash
 lab04-alb-2074635167.ap-southeast-1.elb.amazonaws.com
@@ -502,12 +510,15 @@ You should see the splash page for Nginx.
 
 ![](../Images/lab5nginxwebpage.png)  
 
-----------------------------------------------
 
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
 ```bash
 $ terraform destroy -auto-approve 
 ```
+
+## Resources 
+
+- [Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)

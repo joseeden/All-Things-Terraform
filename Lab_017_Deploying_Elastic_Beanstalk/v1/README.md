@@ -1,5 +1,5 @@
 
-# Deploying Elastic Beanstalk using Terraform - version 1
+# Lab 017 - Deploying Elastic Beanstalk using Terraform - version 1
 
 This is a quick and simple playbook that deploys an Elastic Beanstalk environment:
 

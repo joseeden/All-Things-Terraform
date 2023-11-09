@@ -1,5 +1,5 @@
 
-# Lab 006: Advanced VPC with ALB and EC2 instances
+# Lab 011: Advanced VPC with ALB and EC2 instances
 
   - [Introduction](#introduction)
   - [Pre-requisites](#pre-requisites)

@@ -1,45 +1,54 @@
-## Lab06: Advanced VPC with Cloud-Native Application
+# Lab 013: Advanced VPC with Cloud-Native Application
 
-> This lab is based on [Cloud Academy's course on Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)
+- [Introduction](#introduction)
+- [Pre-requisites](#pre-requisites)
+- [Create the Config Files](#create-the-config-files)
+- [Modularize Terraform Configuration files](#modularize-terraform-configuration-files)
+    - [Network Module](#network-module)
+    - [Security Module](#security-module)
+    - [Bastion Module](#bastion-module)
+    - [Storage Module](#storage-module)
+    - [Application Module](#application-module)
+- [Configure the variables file](#configure-the-variables-file)
+- [Configure the outputs file](#configure-the-outputs-file)
+- [About the Cloud-native Application](#about-the-cloud-native-application)
+- [Time to Apply!](#time-to-apply)
+- [Cleanup](#cleanup)
+- [Resources](#resources)
 
 
-Before we begin, make sure you've setup the following pre-requisites:
-
-  - [Setup Keys and Permissions](../README.md#pre-requisites)
-  - [Setup your Environment and Install Extensions](../README.md#pre-requisites) 
-  - [Configure the Credentials File](../README.md#pre-requisites) 
-  - [Install Terraform](../README.md#pre-requisites) 
-  - [Create the keypair](../README.md#pre-requisites) 
-
-
-
-### Introduction
+## Introduction
 
 In this lab, we'll create the following:
 
-- a VPC spanning two availability zones
+- A VPC spanning two availability zones
 - each AZ will have a public and private subnet
-- an internet gateway and a NAT gateway
+- An internet gateway and a NAT gateway
 - Public and private routes established
-- an Application load BalAncer (ALB) which will loadbalance traffic across
-- an autoscaling group of t3.micro instances with NGINX installed, and 
-- a Cloud-native application consisting of a front-end and an API,
-- a database instance running MongoDB
+- An Application load BalAncer (ALB) which will loadbalance traffic across
+- An autoscaling group of t3.micro instances with NGINX installed, and 
+- A Cloud-native application consisting of a front-end and an API,
+- A database instance running MongoDB
 
-Here's the diagram as reference.
-
+Diagram:
 ![](../Images/lab6diagram1.png)  
 
-Start with creating the project directory.
 
-```bash
-$ mkdir lab06_Advanced_VPC_ALB_Cloud_Native_App
-$ cd lab06_Advanced_VPC_ALB_Cloud_Native_App
-```
+Local environment used for this lab. 
 
-----------------------------------------------
+- Windows machine/laptop
+- Visual Studio Code v1.67.2 (VSCode)
+- WSL on Visual Studio Code
+- Amazon Web Services (AWS) resources
 
-### Create the Provider file and other Config Files
+## Pre-requisites 
+
+- [Setup Keys and Permissions](../README.md#pre-requisites)
+- [Setup your Local Environment and Install Extensions](../README.md#pre-requisites) 
+- [Configure the Credentials File](../README.md#pre-requisites) 
+- [Install Terraform](../README.md#pre-requisites) 
+
+## Create the Config Files
 
 From Hashicorp's documentation on [AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs):
 
@@ -48,6 +57,7 @@ From Hashicorp's documentation on [AWS Provider](https://registry.terraform.io/p
 <details><summary> provider.tf </summary>
  
 ```bash
+### provider.tf
 terraform {
   required_version = ">= 0.12"
 
@@ -72,22 +82,21 @@ provider "aws" {
 In addition to this, we can also create the following files inside the project directory. We'll leave them blank for now as we will be configuring them later.
 
 ```bash
-$ touch main.tf
-$ touch terraform.tfvars
-$ touch variables.tf
-$ touch datasources.tf
-$ touch outputs.tf
+touch main.tf
+touch terraform.tfvars
+touch variables.tf
+touch datasources.tf
+touch outputs.tf
 ```
 
-----------------------------------------------
-
-### Modularize Terraform Configuration files
+## Modularize Terraform Configuration files
 
 In the previous labs, we've done all the core configurations in the main.tf file. This is alright if you're building a fairly simple system, but it gets messy (and increasingly long) as you build more and more complex setups.
 
 To keep our main.tf file clutter-free and easy to read, we will utilize [Terraform AWS modules](https://registry.terraform.io/namespaces/terraform-aws-modules) which will help us modularize the parts and keep each one in their respective directories.
 
 Create the **modules** directory and child modules inside it. The modules that we'll be using are:
+
 - application
 - bastion
 - network
@@ -95,14 +104,14 @@ Create the **modules** directory and child modules inside it. The modules that w
 - storage
 
 ```bash
-$ mkdir -p modules/{application,bastion,network,security,storag
+mkdir -p modules/{application,bastion,network,security,storag
 e} 
 ```
 
 Inside each of the child modules, create the **main.tf**, **outputs.tf**, and **vars.tf**. These will be the core config files for each module.
 
 ```bash
-$ touch modules/{application,bastion,network,security,storage}/
+touch modules/{application,bastion,network,security,storage}/
 {main.tf,outputs.tf,vars.tf} 
 ```
 
@@ -110,6 +119,7 @@ The project directory should now look like this.
 
 ```bash
 $ tree
+
 ├── datasources.tf
 ├── main.tf
 ├── modules
@@ -146,6 +156,7 @@ Let's now create the global **main.tf** file.
 <details><summary> main.tf </summary>
  
 ```bash
+### main.tf
 module "network" {
   source = "./modules/network"
 
@@ -221,7 +232,7 @@ It's important to note that in the **security** block, there's a **depends_on** 
 
 This means that you can only reference values from modules if the module has defined an **output** for that value.
 
-#### Network Module
+### Network Module
 
 Looking inside the network module, we inspect the three files. The first one is the main.tf which si where we configure the VPC. 
 
@@ -286,7 +297,7 @@ output "private_subnets" {
 For more details, check out the Hashicorp documentation on [AWS VPC Terraform module](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest).
 
 
-#### Security Module
+### Security Module
 
 These contain all the configurations for the security groups. In the module's main.tf file, we can see that we have four security groups:
  
@@ -468,7 +479,7 @@ output "bastion_sg_id" {
  
 </details>
 
-#### Bastion Module
+### Bastion Module
 
 Here we have three config files as well. This module will launch a jumpbox that will allow us to access the instances in the private subnets.
 
@@ -521,7 +532,7 @@ output "public_ip" {
 </details>
 
 
-#### Storage Module
+### Storage Module
 
 This module defines the configuration of the MongoDB database.From the main.tf file, we can see that this database instance won't be assigned with a public IP (unlike the bastion instance) as seen with the lack of the **associate_public_ip_address** field. This is because the database will be launched on a private subnet.
 
@@ -635,7 +646,7 @@ output "private_ip" {
 </details>
 
 
-#### Application Module
+### Application Module
 
 This module is another important component as this setups the ALBs, Autoscaling group and the application itself.
 
@@ -926,7 +937,7 @@ EOFF
 popd 
 ```
 
-The lines that follow then pulls the latest API release, starts up, and points to the MongoDB's private IP addresses on port 271017.
+The lines that follow then pulls the latest API release, starts up, and points to the MongoDB's private IP addresses on port 27017.
 
 ```bash
 echo ===========================
@@ -990,9 +1001,8 @@ output "private_ips" {
  
 </details>
 
-----------------------------------------------
 
-### Configure the variables file
+## Configure the variables file
 
 Now that we understand the main config file and the modules it uses, there's only two more config file to complete our setup. Since our templates uses a ton of variables, we have to declare them in the variables.tf file
 
@@ -1081,9 +1091,7 @@ instance_ami = "ami-04d9e855d716f9c99"
  
 </details>
 
-----------------------------------------------
-
-### Configure the outputs file
+## Configure the outputs file
 
 One more thing, we have to configure the outputs.tf file with the expected output values that will be returned once we run the template.
 
@@ -1113,51 +1121,47 @@ output "mongodb_private_ip" {
  
 </details>
 
-----------------------------------------------
-
-### About the Cloud-native Application
+## About the Cloud-native Application
 
 Here are some details about the cloud-native application:
 
-- it allows you to vote for your programming language
-- votes are then stored in a MongoDB database (launched on a private subnet)
-- data can be called to the frontend through API using Ajax calls 
-- this API will then read and write to the MongoDB database.
-- the weblayer where the autoscaling group is launched will run both the frontend and API
-- the application will be pulling the the latest release from the repo below
+- It allows you to vote for your programming language
+- Votes are then stored in a MongoDB database (launched on a private subnet)
+- Data can be called to the frontend through API using Ajax calls 
+- This API will then read and write to the MongoDB database.
+- The weblayer where the autoscaling group is launched will run both the frontend and API
+- The application will be pulling the the latest release from the repo below
 
 The repo for the applications:
 
 - [Frontend application](https://github.com/cloudacademy/voteapp-frontend-react-2020/releases/tag/1.0.21)
 - [API](https://github.com/cloudacademy/voteapp-api-go/releases/tag/1.1.8)
 
-----------------------------------------------
-
-### Time to Apply!
+## Time to Apply!
 
 But first, let's export our [machine's IP](https://whatismyipaddress.com/) as a variable that'll be use by the Terraform template.
 
 ```bash
-$ export TF_VAR_my_ip=1.2.3.4/32 
+export TF_VAR_my_ip=1.2.3.4/32 
 ```
 
 Initialize the working directory.
 
 ```bash
-$ terraform init 
+terraform init 
 ```
 
 Check the formatting of the config files and then verify if the the configurations are syntactically valid.
 
 ```bash
-$ terraform fmt 
-$ terraform validate
+terraform fmt 
+terraform validate
 ```
 
 Next, do a dry-run of the changes before actually applying the changes
 
 ```bash
-$ terraform plan 
+terraform plan 
 ```
 
 If there are no errors, it should return this message
@@ -1165,7 +1169,7 @@ If there are no errors, it should return this message
 ```bash
 Plan: 34 to add, 0 to change, 0 to destroy.
 
-───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if
 you run "terraform apply" now.
@@ -1174,7 +1178,7 @@ you run "terraform apply" now.
 Finally, apply the changes. It should return output values once it's successfully provisioned the resources.
 
 ```bash
-$ terraform apply -auto-approve 
+terraform apply -auto-approve 
 ```
 ```bash
 Apply complete! Resources: 34 added, 0 changed, 0 destroyed.
@@ -1193,7 +1197,7 @@ mongodb_private_ip = "10.0.101.232"
 Do a cURL on the ALB DNS name to check if it will return a "200 OK" response.
 
 ```bash
-$ curl -I lab06-alb-2087422437.ap-southeast-1.elb.amazonaws.com
+curl -I lab06-alb-2087422437.ap-southeast-1.elb.amazonaws.com
 
 HTTP/1.1 200 OK
 Date: Sat, 11 Jun 2022 15:21:15 GMT
@@ -1237,27 +1241,28 @@ Click the three dots in the upper right --> More tools --> Developer tools
 3. Connect to the bastion host then to the mongodb instance
 
 ```bash
-$ ssh -i "keypair.pem" ubuntu@<public-ip-bastion> 
-$ ssh ubuntu@<private-ip-mongodb>
+ssh -i "keypair.pem" ubuntu@<public-ip-bastion> 
+ssh ubuntu@<private-ip-mongodb>
 ```
 
 4. Run the DB client and check the data stored in it.
 
 ```bash
-$ mongo
+mongo
 
 > use langdb
 > db.languages.find().pretty()
 
 ```
 
-----------------------------------------------
-
-
-### Cleanup
+## Cleanup
 
 To delete all the resources, just run the **destroy** command.
 
 ```bash
-$ terraform destroy -auto-approve 
+terraform destroy -auto-approve 
 ```
+
+## Resources
+
+- [Provisioning AWS Infrastructure.](https://cloudacademy.com/course/terraform-provisioning-aws-infrastructure/course-introduction/?context_resource=lp&context_id=2377)

@@ -1,13 +1,20 @@
 
-## Lab 07: Installing Terraform on a Windows Server
+# Lab 014: Install Terraform on a Windows Server
+
+- [Introduction](#introduction)
+- [Launch a Windows instance](#launch-a-windows-instance)
+- [Connect to your instance](#connect-to-your-instance)
+- [Install Terraform](#install-terraform)
+- [Cleanup](#cleanup)
+
+
+## Introduction 
 
 In this lab, we'll be using Powershell to install Terraform on a Windows Server. Before we start, make sure to [launch a Windows Server through the AWS Console](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html). Similarly, you can follow the next step on how to launch a Windows Server.
 
 <!-- ![](../Images/lab7diagram2.png)   -->
 
-### Launch a Windows instance
-
-<details><summary> Spin-up an instance </summary>
+## Launch a Windows instance
 
 To launch a Windows instance, go to the [EC2 console](https://console.aws.amazon.com/ec2/) and click **Launch instances**. 
 
@@ -36,12 +43,8 @@ In the **Edit inbound rules** page, click **Add rule** and set the type of the n
 
 ![](../Images/lab7addnewinboundrule.png)  
 
-</details>
 
-
-### Connect to your instance
-
-<details><summary> Connect to your instance </summary>
+## Connect to your instance
 
 Once your Windows instance is up and running, select it and hit **Connect**. Choose the Session Manager and click **Connect.** 
 
@@ -74,9 +77,8 @@ Open the RDP file that you just downloaded. Click **Connect** and enter the pass
 
 You should now be able to access the Windows Server. Open a Powershell terminal from the Start menu and proceed with the next step.
 
-</details>
 
-### Install Terraform
+## Install Terraform
 
 In the Powershell terminal, create a new directory where the Terraform binary will be saved.
 
@@ -112,7 +114,7 @@ Verify the version installed.
 terraform version
 ```
 
-### Cleanup
+## Cleanup
 
 To delete the resources, close the RDP session and go back to the EC2 console. 
 
