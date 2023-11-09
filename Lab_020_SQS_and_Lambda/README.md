@@ -1,5 +1,5 @@
 
-# Lab 002: DEV Environment with SQS and Lambda
+# Lab 020: SQS and Lambda
 
 
 - [Introduction](#introduction)
