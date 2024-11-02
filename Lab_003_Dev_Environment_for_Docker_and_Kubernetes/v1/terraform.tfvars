@@ -1,4 +1,5 @@
-my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
+# my_credentials = ["/mnt/c/Users/Eden.Jose/.aws/credentials"]
+my_credentials = ["/home/joseeden/.aws/credentials"]
 my_profile     = "tf-user"
 
 aws_region = "ap-southeast-1"

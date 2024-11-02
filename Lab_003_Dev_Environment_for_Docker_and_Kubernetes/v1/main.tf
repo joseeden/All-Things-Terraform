@@ -59,7 +59,8 @@ resource "aws_security_group" "tst-sg-1" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [var.my_ip]
+    cidr_blocks = ["${var.my_ip}/32"]
+    self        = true
   }
 
   egress {
