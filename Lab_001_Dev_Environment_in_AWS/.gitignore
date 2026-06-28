@@ -1,7 +1,0 @@
-
-# ignore some terraform files
-*.terraform*
-*.tfstate.*
-*.tfstate
-.terraform.lock.hcl
-linux_386
